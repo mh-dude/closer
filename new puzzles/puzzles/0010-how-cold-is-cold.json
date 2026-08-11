@@ -1,0 +1,62 @@
+{
+  "number": 10,
+  "slug": "how-cold-is-cold",
+  "title": "How cold is each one?",
+  "prompt": "Place each target by its temperature.",
+  "category": "Temperature",
+  "unit": "°C",
+  "scaleType": "linear",
+  "minValue": -250,
+  "maxValue": 30,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Pluto mean temperature",
+      "shortLabel": "Pluto",
+      "value": -225,
+      "fact": "NASA lists Pluto's mean temperature at -225 °C.",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://science.nasa.gov/resource/solar-system-temperatures/"
+    },
+    {
+      "label": "Neptune mean temperature",
+      "shortLabel": "Neptune",
+      "value": -200,
+      "fact": "For Neptune, NASA's temperature is measured at the atmospheric level with pressure equal to Earth's sea-level pressure.",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://science.nasa.gov/resource/solar-system-temperatures/"
+    },
+    {
+      "label": "Saturn mean temperature",
+      "shortLabel": "Saturn",
+      "value": -140,
+      "fact": "NASA lists Saturn's mean temperature at -140 °C using an atmospheric pressure level comparable to sea level on Earth.",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://science.nasa.gov/resource/solar-system-temperatures/"
+    },
+    {
+      "label": "Mars mean temperature",
+      "shortLabel": "Mars",
+      "value": -65,
+      "fact": "NASA gives Mars a mean temperature of -65 °C.",
+      "sourceLabel": "NASA",
+      "sourceUrl": "https://science.nasa.gov/resource/solar-system-temperatures/"
+    },
+    {
+      "label": "FDA freezer temperature",
+      "shortLabel": "Freezer",
+      "value": -18,
+      "fact": "The FDA says a freezer should be kept at 0 °F (-18 °C); freezing stops most bacteria from growing but does not kill them.",
+      "sourceLabel": "U.S. Food and Drug Administration",
+      "sourceUrl": "https://www.fda.gov/consumers/consumer-updates/are-you-storing-food-safely"
+    },
+    {
+      "label": "FDA refrigerator limit",
+      "shortLabel": "Fridge",
+      "value": 4,
+      "fact": "The FDA recommends keeping a refrigerator at or below 40 °F (4 °C) to help prevent foodborne illness.",
+      "sourceLabel": "U.S. Food and Drug Administration",
+      "sourceUrl": "https://www.fda.gov/consumers/consumer-updates/are-you-storing-food-safely"
+    }
+  ]
+}

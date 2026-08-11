@@ -1,0 +1,60 @@
+{
+  "number": 4,
+  "slug": "sea-mammal-lifespans",
+  "title": "How long can each sea mammal live?",
+  "prompt": "Place each one by the lifespan figure NOAA reports.",
+  "category": "Age",
+  "unit": "years",
+  "scaleType": "linear",
+  "minValue": 20,
+  "maxValue": 100,
+  "difficulty": "hard",
+  "items": [
+    {
+      "label": "Bearded seal",
+      "value": 25,
+      "displayValue": "~25 years",
+      "fact": "Bearded seals are the largest Arctic seal species, and NOAA reports a lifespan of about 25 years.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/bearded-seal/science"
+    },
+    {
+      "label": "Spotted seal",
+      "value": 35,
+      "fact": "Spotted seals form breeding-season family groups made up of a female, a male, and a pup.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/spotted-seal/resources"
+    },
+    {
+      "label": "Narwhal",
+      "value": 50,
+      "fact": "Narwhals may live up to 50 years, and newborn calves are about 5.2 feet long.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/narwhal"
+    },
+    {
+      "label": "Cuvier's beaked whale",
+      "shortLabel": "Cuvier's",
+      "value": 60,
+      "fact": "The longest known Cuvier's beaked whale dive lasted 222 minutes.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/cuviers-beaked-whale/science"
+    },
+    {
+      "label": "North Atlantic right whale",
+      "shortLabel": "Right whale",
+      "value": 70,
+      "fact": "More than 85 percent of North Atlantic right whales have been entangled in fishing gear at least once.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/north-atlantic-right-whale"
+    },
+    {
+      "label": "Killer whale",
+      "shortLabel": "Orca",
+      "value": 90,
+      "fact": "Killer whales are the largest members of the dolphin family and occur in every ocean.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/killer-whale"
+    }
+  ]
+}

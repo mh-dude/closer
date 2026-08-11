@@ -1,0 +1,51 @@
+{
+  "number": 10,
+  "slug": "cooking-temperatures",
+  "title": "How hot is each cooking step?",
+  "prompt": "Place each temperature from coolest to hottest.",
+  "category": "Temperature",
+  "unit": "°C",
+  "scaleType": "linear",
+  "minValue": -25,
+  "maxValue": 500,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A refrigerator",
+      "shortLabel": "Fridge",
+      "value": 4,
+      "fact": "Keeping a fridge at 4 °C or below slows bacterial growth."
+    },
+    {
+      "label": "A warm bath",
+      "shortLabel": "Bath",
+      "value": 40,
+      "fact": "A comfortable bath sits just above body temperature."
+    },
+    {
+      "label": "A medium steak (inside)",
+      "shortLabel": "Steak",
+      "value": 63,
+      "fact": "Medium is reached at about 63 °C internal temperature."
+    },
+    {
+      "label": "Simmering water",
+      "shortLabel": "Simmer",
+      "value": 95,
+      "fact": "A simmer holds just below the rolling boil of 100 °C."
+    },
+    {
+      "label": "Deep-frying oil",
+      "shortLabel": "Frying oil",
+      "value": 180,
+      "fact": "Most deep-frying happens between 175 and 190 °C."
+    },
+    {
+      "label": "A wood-fired pizza oven",
+      "shortLabel": "Pizza oven",
+      "value": 430,
+      "approximate": true,
+      "fact": "Neapolitan pizza cooks in 90 seconds at around 430 °C."
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "number": 2,
+  "slug": "planet-day-lengths",
+  "title": "How long is a day on each planet?",
+  "prompt": "Place each planet by NASA's listed day length.",
+  "category": "Time",
+  "unit": "seconds",
+  "scaleType": "logarithmic",
+  "minValue": 10800,
+  "maxValue": 63072000,
+  "minLabel": "3 hr",
+  "maxLabel": "2 years",
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Jupiter",
+      "value": 36000,
+      "fact": "Jupiter takes about 10 hours to complete one rotation.",
+      "sourceLabel": "NASA Space Place",
+      "sourceUrl": "https://spaceplace.nasa.gov/days/en/"
+    },
+    {
+      "label": "Neptune",
+      "value": 57600,
+      "fact": "NASA lists Neptune's day at 16 hours.",
+      "sourceLabel": "NASA Space Place",
+      "sourceUrl": "https://spaceplace.nasa.gov/days/en/"
+    },
+    {
+      "label": "Earth",
+      "value": 86400,
+      "fact": "NASA lists Earth's day at 24 hours; a sidereal rotation is just under 23 hours 56 minutes.",
+      "sourceLabel": "NASA Space Place",
+      "sourceUrl": "https://spaceplace.nasa.gov/days/en/"
+    },
+    {
+      "label": "Mercury",
+      "value": 5068800,
+      "fact": "Mercury's listed day lasts 1,408 hours, vastly longer than Earth's.",
+      "sourceLabel": "NASA Space Place",
+      "sourceUrl": "https://spaceplace.nasa.gov/days/en/"
+    },
+    {
+      "label": "Venus",
+      "value": 20995200,
+      "fact": "Venus has the longest listed planetary day here at 5,832 hours.",
+      "sourceLabel": "NASA Space Place",
+      "sourceUrl": "https://spaceplace.nasa.gov/days/en/"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# SPA fallback: serve index.html (200) for any route not matching a static file,
+# so deep links like /play/some-slug work on refresh and direct navigation.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

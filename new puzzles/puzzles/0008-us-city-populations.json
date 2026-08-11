@@ -1,0 +1,62 @@
+{
+  "number": 8,
+  "slug": "us-city-populations",
+  "title": "How many people live in each U.S. city?",
+  "prompt": "Place each city by its July 1, 2025 Census population estimate.",
+  "category": "Population",
+  "unit": "people",
+  "scaleType": "logarithmic",
+  "minValue": 15000,
+  "maxValue": 30000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Burlington, Vermont",
+      "shortLabel": "Burlington",
+      "value": 44019,
+      "fact": "Burlington ranked No. 946 among incorporated U.S. places with at least 20,000 residents in the Census table.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    },
+    {
+      "label": "Savannah, Georgia",
+      "shortLabel": "Savannah",
+      "value": 149440,
+      "fact": "Savannah ranked No. 184 in the Census Bureau's July 1, 2025 population table.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    },
+    {
+      "label": "Albuquerque, New Mexico",
+      "shortLabel": "Albuquerque",
+      "value": 556588,
+      "fact": "Albuquerque ranked No. 32 among incorporated U.S. places in the 2025 Census table.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    },
+    {
+      "label": "Austin, Texas",
+      "shortLabel": "Austin",
+      "value": 1002632,
+      "fact": "Austin ranked No. 12 in the Census Bureau's July 1, 2025 population estimates.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    },
+    {
+      "label": "Los Angeles, California",
+      "shortLabel": "Los Angeles",
+      "value": 3869089,
+      "fact": "Los Angeles was the second-most-populous U.S. city in the July 1, 2025 Census estimates.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    },
+    {
+      "label": "New York City, New York",
+      "shortLabel": "New York",
+      "value": 8584629,
+      "fact": "New York City remained No. 1 in the July 1, 2025 Census population ranking.",
+      "sourceLabel": "U.S. Census Bureau",
+      "sourceUrl": "https://www2.census.gov/programs-surveys/popest/tables/2020-2025/cities/totals/SUB-IP-EST2025-ANNRNK.xlsx"
+    }
+  ]
+}

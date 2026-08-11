@@ -1,0 +1,65 @@
+{
+  "number": 6,
+  "slug": "sea-animal-lengths",
+  "title": "How long can each sea animal get?",
+  "prompt": "Place each one by the upper length NOAA reports.",
+  "category": "Size",
+  "unit": "meters",
+  "scaleType": "logarithmic",
+  "minValue": 0.07,
+  "maxValue": 100,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Jonah crab",
+      "value": 0.23,
+      "displayValue": "~23 cm",
+      "fact": "Male Jonah crabs can reach 9 inches, while females are listed up to 6 inches.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/jonah-crab"
+    },
+    {
+      "label": "Pygmy killer whale",
+      "shortLabel": "Pygmy whale",
+      "value": 2.6,
+      "displayValue": "~2.6 m",
+      "fact": "Pygmy killer whales were known only from two fossil skulls until a live animal was discovered in 1954.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/pygmy-killer-whale"
+    },
+    {
+      "label": "Narwhal",
+      "value": 5.5,
+      "displayValue": "~5.5 m",
+      "fact": "Narwhals are listed at 13 to 18 feet long, and calves are about 5.2 feet long at birth.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/narwhal"
+    },
+    {
+      "label": "Killer whale",
+      "shortLabel": "Orca",
+      "value": 9.8,
+      "displayValue": "~9.8 m",
+      "fact": "Killer whales can reach 32 feet and are the largest members of the dolphin family.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/killer-whale"
+    },
+    {
+      "label": "North Atlantic right whale",
+      "shortLabel": "Right whale",
+      "value": 16,
+      "displayValue": "~16 m",
+      "fact": "Adult North Atlantic right whales can grow to 52 feet, while calves are about 14 feet at birth.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/north-atlantic-right-whale"
+    },
+    {
+      "label": "Blue whale",
+      "value": 34,
+      "displayValue": "~34 m",
+      "fact": "Antarctic blue whales can reach about 110 feet and are generally larger than other blue whale subspecies.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/blue-whale/conservation-management"
+    }
+  ]
+}

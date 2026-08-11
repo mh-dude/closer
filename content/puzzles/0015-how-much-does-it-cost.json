@@ -1,0 +1,56 @@
+{
+  "number": 15,
+  "slug": "how-much-does-it-cost",
+  "title": "How much does each thing cost?",
+  "prompt": "Place each item by its approximate US price, cheapest to priciest.",
+  "category": "Cost",
+  "unit": "US dollars",
+  "scaleType": "logarithmic",
+  "minValue": 1,
+  "maxValue": 500000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A cup of coffee",
+      "shortLabel": "Coffee",
+      "value": 4,
+      "approximate": true,
+      "fact": "Café prices vary widely, but a plain brewed coffee lands near $4 in much of the US."
+    },
+    {
+      "label": "A new smartphone",
+      "shortLabel": "Phone",
+      "value": 900,
+      "approximate": true,
+      "fact": "Flagship phones now cost about as much as a used laptop."
+    },
+    {
+      "label": "A used car",
+      "shortLabel": "Used car",
+      "value": 18000,
+      "approximate": true,
+      "fact": "Average used-car prices climbed sharply during the 2020s."
+    },
+    {
+      "label": "A new car",
+      "shortLabel": "New car",
+      "value": 48000,
+      "approximate": true,
+      "fact": "The average new-car transaction price is near $48,000."
+    },
+    {
+      "label": "An average US home",
+      "shortLabel": "Home",
+      "value": 420000,
+      "approximate": true,
+      "fact": "The median US home sale price sits around $420,000."
+    },
+    {
+      "label": "A commercial airliner",
+      "shortLabel": "Airliner",
+      "value": 110000000,
+      "approximate": true,
+      "fact": "A single-aisle jet lists near $110 million before airline discounts."
+    }
+  ]
+}

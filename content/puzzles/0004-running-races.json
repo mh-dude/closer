@@ -1,0 +1,50 @@
+{
+  "number": 4,
+  "slug": "running-races",
+  "title": "How long is each running race?",
+  "prompt": "Place each race distance from shortest to longest.",
+  "category": "Distance",
+  "unit": "meters",
+  "scaleType": "logarithmic",
+  "minValue": 50,
+  "maxValue": 60000,
+  "difficulty": "easy",
+  "items": [
+    {
+      "label": "The 100-meter dash",
+      "shortLabel": "100 m",
+      "value": 100,
+      "fact": "World-class sprinters cover it in under 10 seconds — over 37 km/h."
+    },
+    {
+      "label": "The mile",
+      "shortLabel": "Mile",
+      "value": 1609,
+      "fact": "The sub-four-minute mile stood as an impossible barrier until Roger Bannister in 1954."
+    },
+    {
+      "label": "A 5K",
+      "shortLabel": "5K",
+      "value": 5000,
+      "fact": "A brisk recreational runner finishes a 5K in around 30 minutes."
+    },
+    {
+      "label": "A 10K",
+      "shortLabel": "10K",
+      "value": 10000,
+      "fact": "Double the 5K, but the pacing strategy is very different."
+    },
+    {
+      "label": "A half marathon",
+      "shortLabel": "Half",
+      "value": 21097,
+      "fact": "Exactly half the marathon distance — 13.1 miles."
+    },
+    {
+      "label": "A marathon",
+      "shortLabel": "Marathon",
+      "value": 42195,
+      "fact": "Named for the Greek messenger who supposedly ran from Marathon to Athens."
+    }
+  ]
+}

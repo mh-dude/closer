@@ -1,0 +1,57 @@
+{
+  "number": 2,
+  "slug": "animal-lifespans",
+  "title": "How long do these animals live?",
+  "prompt": "Place each animal by its typical maximum lifespan.",
+  "category": "Time",
+  "unit": "years",
+  "scaleType": "logarithmic",
+  "minValue": 0.0014,
+  "maxValue": 500,
+  "minLabel": "about 12 hours",
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Adult mayfly",
+      "shortLabel": "Mayfly",
+      "value": 0.0027,
+      "displayValue": "about 1 day",
+      "fact": "Adult mayflies live a day or less — just long enough to reproduce."
+    },
+    {
+      "label": "House mouse",
+      "shortLabel": "Mouse",
+      "value": 2,
+      "approximate": true,
+      "fact": "Wild mice rarely reach their second birthday; predators and cold take most."
+    },
+    {
+      "label": "Domestic dog",
+      "shortLabel": "Dog",
+      "value": 12,
+      "approximate": true,
+      "fact": "Smaller breeds tend to outlive larger ones by several years."
+    },
+    {
+      "label": "Human",
+      "shortLabel": "Human",
+      "value": 73,
+      "approximate": true,
+      "fact": "Global average life expectancy is about 73 years, up from roughly 32 a century ago."
+    },
+    {
+      "label": "Giant tortoise",
+      "shortLabel": "Tortoise",
+      "value": 150,
+      "approximate": true,
+      "fact": "Some Galápagos tortoises alive today hatched before the light bulb was invented."
+    },
+    {
+      "label": "Greenland shark",
+      "shortLabel": "Shark",
+      "value": 300,
+      "displayValue": "300+ years",
+      "fact": "Greenland sharks may live 300–400 years — the longest-lived vertebrate known."
+    }
+  ]
+}

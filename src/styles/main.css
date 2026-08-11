@@ -1,0 +1,214 @@
+:root {
+  /* Paper / editorial palette */
+  --paper: #f7f4ee;
+  --paper-raised: #fffdf9;
+  --ink: #23201b;
+  --ink-soft: #55504733;
+  --ink-muted: #6f685c;
+  --line: #ded7ca;
+  --line-strong: #c8c0af;
+
+  /* Restrained accents */
+  --accent: #b4551f; /* warm terracotta */
+  --accent-ink: #8f4318;
+  /*
+   * Guess vs. answer are a two-slot categorical pair and must stay tellable
+   * apart. The earlier slate/sage pairing measured ΔE 10.7 for normal vision —
+   * below the 15 floor — so the reveal was genuinely ambiguous. These are
+   * validated against the paper surface alongside the accent; re-run
+   * scripts/validate_palette.js before changing either.
+   */
+  --guess: #2f6db0; /* the player's guess */
+  --answer: #2e8b57; /* the true answer */
+
+  /* Score bands (paired with text labels — never color alone) */
+  --band-exact: #2f7d5b;
+  --band-very-close: #4f9e6a;
+  --band-close: #b78b1e;
+  --band-off: #c0762a;
+  --band-far: #b4432b;
+
+  --shadow-sm: 0 1px 2px rgba(35, 32, 27, 0.06);
+  --shadow-md: 0 6px 24px rgba(35, 32, 27, 0.1);
+
+  --radius: 10px;
+  --radius-sm: 7px;
+
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --content-width: 640px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a {
+  color: var(--accent-ink);
+  text-decoration: none;
+  touch-action: manipulation;
+}
+@media (hover: hover) {
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  /* svh = the viewport with iOS Safari's toolbars showing, so the shell never
+     forces a phantom scroll before any content does. */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  /* clip, not hidden: hidden would make this a scroll container and break the
+     sticky header. Guards against marker labels near the scale ends. */
+  overflow-x: clip;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 24px max(20px, env(safe-area-inset-right)) 64px max(20px, env(safe-area-inset-left));
+  flex: 1 0 auto;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-raised);
+  color: var(--ink);
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+  min-height: 46px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+@media (hover: hover) {
+  .btn:hover {
+    border-color: var(--ink);
+  }
+  .btn--primary:hover {
+    background: var(--accent-ink);
+    border-color: var(--accent-ink);
+  }
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn--block {
+  width: 100%;
+}
+.btn--ghost {
+  background: transparent;
+  border-color: var(--line);
+}
+
+.card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-muted);
+  background: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "number": 9,
+  "slug": "country-populations",
+  "title": "How many people live in each country?",
+  "prompt": "Place each country by its 2025 population.",
+  "category": "Population",
+  "unit": "people",
+  "scaleType": "logarithmic",
+  "minValue": 100000,
+  "maxValue": 5000000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Iceland",
+      "value": 392404,
+      "fact": "The World Bank lists Iceland's 2025 population growth rate at 1.5 percent.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/iceland"
+    },
+    {
+      "label": "New Zealand",
+      "shortLabel": "New Zealand",
+      "value": 5324700,
+      "fact": "The World Bank lists New Zealand's 2025 population growth rate at 0.7 percent.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/new-zealand"
+    },
+    {
+      "label": "South Korea",
+      "shortLabel": "S. Korea",
+      "value": 51684564,
+      "fact": "The World Bank lists South Korea's 2025 population growth rate at -0.1 percent.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/korea-rep"
+    },
+    {
+      "label": "Mexico",
+      "value": 131946900,
+      "fact": "The World Bank lists Mexico's 2025 population growth rate at 0.8 percent.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/mexico"
+    },
+    {
+      "label": "United States",
+      "shortLabel": "U.S.",
+      "value": 341784857,
+      "fact": "The World Bank lists U.S. population growth at 0.5 percent in 2025.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/united-states"
+    },
+    {
+      "label": "India",
+      "value": 1460000000,
+      "displayValue": "~1.46 billion",
+      "fact": "The World Bank's country page reports India's 2025 population as about 1.46 billion and growth at 0.9 percent.",
+      "sourceLabel": "World Bank",
+      "sourceUrl": "https://data.worldbank.org/country/india"
+    }
+  ]
+}

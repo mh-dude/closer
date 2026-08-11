@@ -1,0 +1,64 @@
+{
+  "number": 3,
+  "slug": "yosemite-waterfall-heights",
+  "title": "How tall is each Yosemite waterfall?",
+  "prompt": "Place each waterfall by its total height.",
+  "category": "Distance",
+  "unit": "meters",
+  "scaleType": "linear",
+  "minValue": 20,
+  "maxValue": 800,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Vernal Fall",
+      "shortLabel": "Vernal",
+      "value": 97,
+      "fact": "Vernal Fall flows year-round, but by late summer it can split into two or three separate falls.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    },
+    {
+      "label": "Bridalveil Fall",
+      "shortLabel": "Bridalveil",
+      "value": 190,
+      "fact": "Bridalveil Fall flows all year and is often the first waterfall visitors see entering Yosemite Valley.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    },
+    {
+      "label": "Horsetail Fall",
+      "shortLabel": "Horsetail",
+      "value": 305,
+      "displayValue": "~305 m",
+      "fact": "Horsetail Fall can appear fiery orange at sunset in mid- to late February.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    },
+    {
+      "label": "Wapama Falls",
+      "shortLabel": "Wapama",
+      "value": 427,
+      "fact": "Wapama Falls flows year-round in Hetch Hetchy Valley and peaks in May.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    },
+    {
+      "label": "Sentinel Falls",
+      "shortLabel": "Sentinel",
+      "value": 610,
+      "displayValue": "~610 m",
+      "fact": "Sentinel Falls is made of multiple cascades ranging from about 50 to 500 feet high.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    },
+    {
+      "label": "Yosemite Falls",
+      "shortLabel": "Yosemite",
+      "value": 740,
+      "fact": "Yosemite Falls is actually three falls: Upper Yosemite Fall, the middle cascades, and Lower Yosemite Fall.",
+      "sourceLabel": "National Park Service",
+      "sourceUrl": "https://www.nps.gov/yose/planyourvisit/waterfalls.htm"
+    }
+  ]
+}

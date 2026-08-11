@@ -1,0 +1,45 @@
+{
+  "number": 9,
+  "slug": "temperatures",
+  "title": "How hot or cold is each thing?",
+  "prompt": "Place each one from coldest to hottest.",
+  "category": "Temperature",
+  "unit": "°C",
+  "scaleType": "linear",
+  "minValue": -30,
+  "maxValue": 150,
+  "difficulty": "easy",
+  "items": [
+    {
+      "label": "A home freezer",
+      "shortLabel": "Freezer",
+      "value": -18,
+      "displayValue": "−18 °C",
+      "fact": "Home freezers are set to −18 °C to keep food safely frozen."
+    },
+    {
+      "label": "A freezing winter day",
+      "shortLabel": "Winter day",
+      "value": 0,
+      "fact": "Water freezes at 0 °C — the reference point of the Celsius scale."
+    },
+    {
+      "label": "Room temperature",
+      "shortLabel": "Room",
+      "value": 21,
+      "fact": "Most people find about 21 °C comfortable indoors."
+    },
+    {
+      "label": "Human body temperature",
+      "shortLabel": "Body",
+      "value": 37,
+      "fact": "The classic 98.6 °F figure is an average — normal ranges a degree either way."
+    },
+    {
+      "label": "Boiling water",
+      "shortLabel": "Boiling",
+      "value": 100,
+      "fact": "At sea level water boils at 100 °C; it drops at altitude."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "number": 11,
+  "slug": "populations",
+  "title": "How many people live there?",
+  "prompt": "Place each place from smallest population to largest.",
+  "category": "Population",
+  "unit": "people",
+  "scaleType": "logarithmic",
+  "minValue": 10000,
+  "maxValue": 1000000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A small Ohio suburb",
+      "shortLabel": "Suburb",
+      "value": 15000,
+      "approximate": true,
+      "fact": "Plenty of pleasant American towns sit in the 10–20 thousand range."
+    },
+    {
+      "label": "Cleveland, Ohio",
+      "shortLabel": "Cleveland",
+      "value": 370000,
+      "approximate": true,
+      "fact": "The city proper has shrunk from a 1950 peak of over 900,000."
+    },
+    {
+      "label": "Iceland",
+      "shortLabel": "Iceland",
+      "value": 390000,
+      "approximate": true,
+      "fact": "An entire nation smaller than many single cities."
+    },
+    {
+      "label": "New York City",
+      "shortLabel": "NYC",
+      "value": 8300000,
+      "approximate": true,
+      "fact": "More people live in NYC than in 40 of the 50 US states."
+    },
+    {
+      "label": "Tokyo metro area",
+      "shortLabel": "Tokyo",
+      "value": 37000000,
+      "approximate": true,
+      "fact": "The largest metropolitan area on Earth."
+    },
+    {
+      "label": "The United States",
+      "shortLabel": "USA",
+      "value": 335000000,
+      "approximate": true,
+      "fact": "The third most populous country, after India and China."
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "number": 18,
+  "slug": "heart-rates",
+  "title": "How fast does each heart beat?",
+  "prompt": "Place each one by its resting heart rate, slowest to fastest.",
+  "category": "Frequency",
+  "unit": "beats per minute",
+  "scaleType": "logarithmic",
+  "minValue": 5,
+  "maxValue": 2500,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A blue whale",
+      "shortLabel": "Blue whale",
+      "value": 8,
+      "approximate": true,
+      "fact": "While diving, a blue whale’s heart can slow to just 8 beats a minute."
+    },
+    {
+      "label": "An elephant",
+      "shortLabel": "Elephant",
+      "value": 28,
+      "approximate": true,
+      "fact": "Bigger animals generally have slower hearts."
+    },
+    {
+      "label": "A resting human",
+      "shortLabel": "Human",
+      "value": 70,
+      "approximate": true,
+      "fact": "A typical resting adult heart beats 60–100 times a minute."
+    },
+    {
+      "label": "A house cat",
+      "shortLabel": "Cat",
+      "value": 150,
+      "approximate": true,
+      "fact": "A cat's heart races at roughly twice a human's."
+    },
+    {
+      "label": "A mouse",
+      "shortLabel": "Mouse",
+      "value": 500,
+      "approximate": true,
+      "fact": "Tiny bodies burn energy fast, driving very quick heartbeats."
+    },
+    {
+      "label": "A hummingbird",
+      "shortLabel": "Hummingbird",
+      "value": 1200,
+      "approximate": true,
+      "fact": "In flight, a hummingbird heart can exceed 1,200 beats a minute."
+    }
+  ]
+}

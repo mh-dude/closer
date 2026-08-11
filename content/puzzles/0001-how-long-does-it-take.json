@@ -1,0 +1,51 @@
+{
+  "number": 1,
+  "slug": "how-long-does-it-take",
+  "title": "How long does each event take?",
+  "prompt": "Place each event by how long it lasts, from the briefest to the longest.",
+  "category": "Time",
+  "unit": "seconds",
+  "scaleType": "logarithmic",
+  "minValue": 0.05,
+  "maxValue": 28800,
+  "maxLabel": "8 hours",
+  "difficulty": "easy",
+  "items": [
+    {
+      "label": "A blink of an eye",
+      "shortLabel": "Blink",
+      "value": 0.1,
+      "fact": "A single blink lasts about a tenth of a second — you do it 15–20 times a minute without noticing."
+    },
+    {
+      "label": "One heartbeat",
+      "shortLabel": "Heartbeat",
+      "value": 0.86,
+      "fact": "A resting heart beats roughly once a second — about 100,000 times a day."
+    },
+    {
+      "label": "Microwaving popcorn",
+      "shortLabel": "Popcorn",
+      "value": 165,
+      "fact": "Most bags are engineered to finish in under three minutes before the kernels scorch."
+    },
+    {
+      "label": "A sitcom episode",
+      "shortLabel": "Sitcom",
+      "value": 1320,
+      "fact": "A 'half-hour' sitcom is really about 22 minutes — the rest is advertising."
+    },
+    {
+      "label": "A feature film",
+      "shortLabel": "Movie",
+      "value": 8100,
+      "fact": "The average Hollywood feature has crept past two hours over recent decades."
+    },
+    {
+      "label": "A flight from Cleveland to New York City",
+      "shortLabel": "CLE → NYC",
+      "value": 5400,
+      "fact": "The gate-to-gate hop is about 90 minutes; the actual airtime is closer to 70."
+    }
+  ]
+}

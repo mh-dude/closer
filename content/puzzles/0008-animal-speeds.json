@@ -1,0 +1,50 @@
+{
+  "number": 8,
+  "slug": "animal-speeds",
+  "title": "How fast is each animal?",
+  "prompt": "Place each animal from slowest to fastest.",
+  "category": "Speed",
+  "unit": "km/h",
+  "scaleType": "logarithmic",
+  "minValue": 0.03,
+  "maxValue": 500,
+  "difficulty": "hard",
+  "items": [
+    {
+      "label": "A garden snail",
+      "shortLabel": "Snail",
+      "value": 0.05,
+      "fact": "A snail would need most of a day to cross a single soccer field."
+    },
+    {
+      "label": "A giant tortoise",
+      "shortLabel": "Tortoise",
+      "value": 0.4,
+      "fact": "Even ambling, a tortoise moves about eight times faster than a snail."
+    },
+    {
+      "label": "A jogging human",
+      "shortLabel": "Jogger",
+      "value": 10,
+      "fact": "A steady jog is roughly 10 km/h — a 6-minute kilometer."
+    },
+    {
+      "label": "A greyhound",
+      "shortLabel": "Greyhound",
+      "value": 70,
+      "fact": "The fastest dog breed, built like a sprinter."
+    },
+    {
+      "label": "A cheetah",
+      "shortLabel": "Cheetah",
+      "value": 110,
+      "fact": "The fastest land animal — but only in bursts of a few seconds."
+    },
+    {
+      "label": "A diving peregrine falcon",
+      "shortLabel": "Falcon",
+      "value": 320,
+      "fact": "In a hunting stoop, the peregrine is the fastest animal on Earth."
+    }
+  ]
+}

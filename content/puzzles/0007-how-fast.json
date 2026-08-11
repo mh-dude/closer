@@ -1,0 +1,50 @@
+{
+  "number": 7,
+  "slug": "how-fast",
+  "title": "How fast does each thing move?",
+  "prompt": "Place each one by its typical speed, slowest to fastest.",
+  "category": "Speed",
+  "unit": "km/h",
+  "scaleType": "logarithmic",
+  "minValue": 3,
+  "maxValue": 1500,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A walking person",
+      "shortLabel": "Walking",
+      "value": 5,
+      "fact": "A comfortable walking pace is about 5 km/h — a kilometer every 12 minutes."
+    },
+    {
+      "label": "A cyclist cruising",
+      "shortLabel": "Cyclist",
+      "value": 32,
+      "fact": "A fit rider holds around 30 km/h on the flats."
+    },
+    {
+      "label": "An Olympic sprinter",
+      "shortLabel": "Sprinter",
+      "value": 37,
+      "fact": "Usain Bolt hit a peak of about 44 km/h mid-race."
+    },
+    {
+      "label": "A galloping racehorse",
+      "shortLabel": "Racehorse",
+      "value": 65,
+      "fact": "Thoroughbreds sustain roughly 65 km/h over a race."
+    },
+    {
+      "label": "A car on the highway",
+      "shortLabel": "Highway car",
+      "value": 110,
+      "fact": "A typical highway limit — about 68 mph."
+    },
+    {
+      "label": "A commercial jet cruising",
+      "shortLabel": "Jet",
+      "value": 900,
+      "fact": "Airliners cruise near 900 km/h, just below the speed of sound."
+    }
+  ]
+}

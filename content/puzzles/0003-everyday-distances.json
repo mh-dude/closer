@@ -1,0 +1,50 @@
+{
+  "number": 3,
+  "slug": "everyday-distances",
+  "title": "How far is each distance?",
+  "prompt": "Place each one from the shortest span to the longest.",
+  "category": "Distance",
+  "unit": "meters",
+  "scaleType": "logarithmic",
+  "minValue": 5,
+  "maxValue": 1000000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A bowling lane",
+      "shortLabel": "Bowling lane",
+      "value": 18,
+      "fact": "A regulation lane is 60 feet from the foul line to the head pin."
+    },
+    {
+      "label": "A football field",
+      "shortLabel": "Football field",
+      "value": 91,
+      "fact": "The playing field is 100 yards — about 91 meters — before the end zones."
+    },
+    {
+      "label": "A 5K race",
+      "shortLabel": "5K",
+      "value": 5000,
+      "fact": "The 5K is the most popular race distance in the world."
+    },
+    {
+      "label": "A marathon",
+      "shortLabel": "Marathon",
+      "value": 42195,
+      "fact": "The odd 42.195 km was fixed at the 1908 London Olympics to end at the royal box."
+    },
+    {
+      "label": "Cleveland to Columbus",
+      "shortLabel": "CLE → CMH",
+      "value": 230000,
+      "fact": "The I-71 drive is about 230 km, roughly two and a quarter hours."
+    },
+    {
+      "label": "Earth to the Moon",
+      "shortLabel": "To the Moon",
+      "value": 384400000,
+      "fact": "The average Earth–Moon gap could fit all seven other planets between them."
+    }
+  ]
+}

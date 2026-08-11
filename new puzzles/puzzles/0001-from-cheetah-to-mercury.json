@@ -1,0 +1,61 @@
+{
+  "number": 1,
+  "slug": "from-cheetah-to-mercury",
+  "title": "How fast is each one?",
+  "prompt": "Place each one by the speed Guinness lists for it.",
+  "category": "Speed",
+  "unit": "km/h",
+  "scaleType": "logarithmic",
+  "minValue": 30,
+  "maxValue": 500000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "Cheetah",
+      "value": 103.4,
+      "fact": "A 35 kg adult female cheetah was recorded at 103.4 km/h over 201.2 metres in 1965.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    },
+    {
+      "label": "Formula Rossa roller coaster",
+      "shortLabel": "Rossa",
+      "value": 240,
+      "fact": "Formula Rossa reaches 240 km/h and climbs 52 metres in 4.9 seconds.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    },
+    {
+      "label": "Thrust SSC land-speed car",
+      "shortLabel": "Thrust SSC",
+      "value": 1227.9,
+      "fact": "Thrust SSC became the first car to break the sound barrier when it reached Mach 1.020 in 1997.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    },
+    {
+      "label": "X-15A-2 rocket plane",
+      "shortLabel": "X-15A-2",
+      "value": 7274,
+      "fact": "The X-15A-2 reached Mach 6.7 at an altitude of 31,120 metres in 1967.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    },
+    {
+      "label": "Apollo 10 command module",
+      "shortLabel": "Apollo 10",
+      "value": 39897,
+      "fact": "Apollo 10's crew reached 39,897 km/h on the trans-Earth return flight in May 1969.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    },
+    {
+      "label": "Mercury orbiting the Sun",
+      "shortLabel": "Mercury",
+      "value": 172248,
+      "fact": "Mercury's average orbital speed is 172,248 km/h, and one orbit takes 87 days 21 hours.",
+      "sourceLabel": "Guinness World Records",
+      "sourceUrl": "https://www.guinnessworldrecords.com/news/2022/7/10-of-the-fastest-things-ever-and-how-they-compare-711669?fbclid=iwar0sgtqkpjoyvxmigmbgr1iqq4bp9h3i8fmb4gue9qyhxmfgxqnuzoi-vjk"
+    }
+  ]
+}

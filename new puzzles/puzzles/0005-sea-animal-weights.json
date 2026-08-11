@@ -1,0 +1,64 @@
+{
+  "number": 5,
+  "slug": "sea-animal-weights",
+  "title": "How heavy can each sea animal get?",
+  "prompt": "Place each one by the upper weight NOAA reports.",
+  "category": "Weight",
+  "unit": "kilograms",
+  "scaleType": "logarithmic",
+  "minValue": 0.3,
+  "maxValue": 500000,
+  "difficulty": "hard",
+  "items": [
+    {
+      "label": "Jonah crab",
+      "value": 0.9,
+      "displayValue": "~0.9 kg",
+      "fact": "Jonah crab was once mainly lobster-fishery bycatch before becoming a targeted fishery.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/jonah-crab"
+    },
+    {
+      "label": "Spotted seal",
+      "value": 110,
+      "displayValue": "~110 kg",
+      "fact": "Adult spotted seals are listed at 140 to 250 pounds and usually forage over the continental shelf.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/spotted-seal/resources"
+    },
+    {
+      "label": "Narwhal",
+      "value": 1600,
+      "displayValue": "~1.6 t",
+      "fact": "NOAA lists narwhals at 1,760 to 3,530 pounds, while newborn calves weigh about 176 pounds.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/narwhal"
+    },
+    {
+      "label": "Cuvier's beaked whale",
+      "shortLabel": "Cuvier's",
+      "value": 3100,
+      "displayValue": "~3.1 t",
+      "fact": "Cuvier's beaked whales can weigh up to 6,800 pounds and have been recorded diving nearly two miles deep.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/cuviers-beaked-whale/science"
+    },
+    {
+      "label": "North Atlantic right whale",
+      "shortLabel": "Right whale",
+      "value": 64000,
+      "displayValue": "~64 t",
+      "fact": "North Atlantic right whales can weigh up to 140,000 pounds and feed by straining tiny crustaceans through baleen.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/north-atlantic-right-whale"
+    },
+    {
+      "label": "Blue whale",
+      "value": 150000,
+      "displayValue": "~150 t",
+      "fact": "The biggest blue whales can eat up to six tons of krill in a day.",
+      "sourceLabel": "NOAA Fisheries",
+      "sourceUrl": "https://www.fisheries.noaa.gov/species/blue-whale/conservation-management"
+    }
+  ]
+}

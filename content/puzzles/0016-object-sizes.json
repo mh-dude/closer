@@ -1,0 +1,50 @@
+{
+  "number": 16,
+  "slug": "object-sizes",
+  "title": "How big is each object?",
+  "prompt": "Place each object by its length, smallest to largest.",
+  "category": "Size",
+  "unit": "meters",
+  "scaleType": "logarithmic",
+  "minValue": 0.0015,
+  "maxValue": 60,
+  "difficulty": "easy",
+  "items": [
+    {
+      "label": "A grain of rice",
+      "shortLabel": "Rice",
+      "value": 0.006,
+      "fact": "A single grain is about 6 mm long — engravers famously write on them."
+    },
+    {
+      "label": "A smartphone",
+      "shortLabel": "Phone",
+      "value": 0.15,
+      "fact": "A typical phone is about 15 cm tall."
+    },
+    {
+      "label": "A basketball",
+      "shortLabel": "Basketball",
+      "value": 0.24,
+      "fact": "A regulation ball is about 24 cm across."
+    },
+    {
+      "label": "An adult human",
+      "shortLabel": "Human",
+      "value": 1.7,
+      "fact": "The global average adult height is roughly 1.7 m."
+    },
+    {
+      "label": "A school bus",
+      "shortLabel": "Bus",
+      "value": 11,
+      "fact": "A full-size school bus runs about 11 m end to end."
+    },
+    {
+      "label": "A blue whale",
+      "shortLabel": "Blue whale",
+      "value": 25,
+      "fact": "The longest animal ever — about the length of three school buses."
+    }
+  ]
+}

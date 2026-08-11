@@ -1,0 +1,53 @@
+{
+  "number": 5,
+  "slug": "everyday-weights",
+  "title": "How heavy is each object?",
+  "prompt": "Place each object from lightest to heaviest.",
+  "category": "Weight",
+  "unit": "kilograms",
+  "scaleType": "logarithmic",
+  "minValue": 0.0003,
+  "maxValue": 15000,
+  "difficulty": "easy",
+  "items": [
+    {
+      "label": "A paperclip",
+      "shortLabel": "Paperclip",
+      "value": 0.001,
+      "displayValue": "1 gram",
+      "fact": "The standard paperclip is the informal unit for \"one gram.\""
+    },
+    {
+      "label": "A smartphone",
+      "shortLabel": "Phone",
+      "value": 0.19,
+      "fact": "Modern phones hover near 200 g — heavier than most early models, thanks to bigger batteries and glass."
+    },
+    {
+      "label": "A bowling ball",
+      "shortLabel": "Bowling ball",
+      "value": 6.4,
+      "fact": "The maximum legal weight is 16 pounds — about 7.3 kg."
+    },
+    {
+      "label": "An adult human",
+      "shortLabel": "Human",
+      "value": 62,
+      "fact": "The global average adult body mass is about 62 kg."
+    },
+    {
+      "label": "A small car",
+      "shortLabel": "Car",
+      "value": 1500,
+      "displayValue": "1,500 kg",
+      "fact": "A compact car weighs roughly as much as 25 adults."
+    },
+    {
+      "label": "An African elephant",
+      "shortLabel": "Elephant",
+      "value": 6000,
+      "displayValue": "6,000 kg",
+      "fact": "The largest land animal — a big bull can top 6 tonnes."
+    }
+  ]
+}

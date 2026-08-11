@@ -1,0 +1,57 @@
+{
+  "number": 13,
+  "slug": "how-old",
+  "title": "How long ago did each begin?",
+  "prompt": "Place each one by how long ago it first appeared.",
+  "category": "Age",
+  "unit": "years ago",
+  "scaleType": "logarithmic",
+  "minValue": 6,
+  "maxValue": 10000000000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "The first smartphone era",
+      "shortLabel": "Smartphone",
+      "value": 19,
+      "approximate": true,
+      "fact": "The original iPhone launched in 2007 and reset what a phone could be."
+    },
+    {
+      "label": "The World Wide Web",
+      "shortLabel": "The Web",
+      "value": 35,
+      "approximate": true,
+      "fact": "Tim Berners-Lee proposed the Web in 1989 at CERN."
+    },
+    {
+      "label": "The United States",
+      "shortLabel": "USA",
+      "value": 250,
+      "approximate": true,
+      "fact": "A young country by world standards — founded in 1776."
+    },
+    {
+      "label": "The Great Pyramid of Giza",
+      "shortLabel": "Pyramid",
+      "value": 4600,
+      "approximate": true,
+      "fact": "It was already ancient when Cleopatra was alive."
+    },
+    {
+      "label": "The first dinosaurs",
+      "shortLabel": "Dinosaurs",
+      "value": 230000000,
+      "approximate": true,
+      "fact": "Dinosaurs ruled for over 150 million years before their extinction."
+    },
+    {
+      "label": "Planet Earth",
+      "shortLabel": "Earth",
+      "value": 4540000000,
+      "approximate": true,
+      "displayValue": "~4.54 billion years",
+      "fact": "Roughly a third of the age of the universe itself."
+    }
+  ]
+}

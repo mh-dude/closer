@@ -1,0 +1,51 @@
+{
+  "number": 17,
+  "slug": "how-tall",
+  "title": "How tall is each thing?",
+  "prompt": "Place each one by its height, shortest to tallest.",
+  "category": "Size",
+  "unit": "meters",
+  "scaleType": "logarithmic",
+  "minValue": 1,
+  "maxValue": 2000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "An adult human",
+      "shortLabel": "Human",
+      "value": 1.7,
+      "fact": "A useful yardstick for judging everything taller."
+    },
+    {
+      "label": "A giraffe",
+      "shortLabel": "Giraffe",
+      "value": 5.5,
+      "fact": "The tallest land animal — its neck alone can be 2 m."
+    },
+    {
+      "label": "A two-story house",
+      "shortLabel": "House",
+      "value": 8,
+      "approximate": true,
+      "fact": "Roughly the height of two stacked giraffes."
+    },
+    {
+      "label": "The Statue of Liberty",
+      "shortLabel": "Liberty",
+      "value": 93,
+      "fact": "From base to torch, Lady Liberty stands about 93 m."
+    },
+    {
+      "label": "The Eiffel Tower",
+      "shortLabel": "Eiffel",
+      "value": 330,
+      "fact": "It grows a few centimeters taller in summer as the iron expands."
+    },
+    {
+      "label": "The Burj Khalifa",
+      "shortLabel": "Burj Khalifa",
+      "value": 828,
+      "fact": "The tallest building on Earth — more than twice the Eiffel Tower."
+    }
+  ]
+}

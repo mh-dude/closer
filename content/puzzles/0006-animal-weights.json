@@ -1,0 +1,52 @@
+{
+  "number": 6,
+  "slug": "animal-weights",
+  "title": "How much does each animal weigh?",
+  "prompt": "Place each animal from lightest to heaviest.",
+  "category": "Weight",
+  "unit": "kilograms",
+  "scaleType": "logarithmic",
+  "minValue": 0.000025,
+  "maxValue": 500000,
+  "difficulty": "medium",
+  "items": [
+    {
+      "label": "A honeybee",
+      "shortLabel": "Honeybee",
+      "value": 0.0001,
+      "fact": "A foraging honeybee weighs about a tenth of a gram and can carry near its own weight in nectar."
+    },
+    {
+      "label": "A house cat",
+      "shortLabel": "Cat",
+      "value": 4.5,
+      "fact": "A healthy domestic cat is usually 4–5 kg."
+    },
+    {
+      "label": "A giant panda",
+      "shortLabel": "Panda",
+      "value": 100,
+      "fact": "Pandas eat up to 12 kg of bamboo a day to sustain that bulk."
+    },
+    {
+      "label": "A polar bear",
+      "shortLabel": "Polar bear",
+      "value": 450,
+      "fact": "The largest land carnivore — big males can approach 700 kg."
+    },
+    {
+      "label": "A hippopotamus",
+      "shortLabel": "Hippo",
+      "value": 1500,
+      "displayValue": "1,500 kg",
+      "fact": "Despite their bulk, hippos can outrun a human over short distances."
+    },
+    {
+      "label": "A blue whale",
+      "shortLabel": "Blue whale",
+      "value": 150000,
+      "displayValue": "150,000 kg",
+      "fact": "The heaviest animal ever known — heavier than the largest dinosaurs."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "number": 12,
+  "slug": "country-populations",
+  "title": "How populous is each country?",
+  "prompt": "Place each country from smallest population to largest.",
+  "category": "Population",
+  "unit": "people",
+  "scaleType": "logarithmic",
+  "minValue": 50000,
+  "maxValue": 4000000000,
+  "difficulty": "hard",
+  "items": [
+    {
+      "label": "Iceland",
+      "shortLabel": "Iceland",
+      "value": 390000,
+      "approximate": true,
+      "fact": "One of the least densely populated countries in Europe."
+    },
+    {
+      "label": "Ireland",
+      "shortLabel": "Ireland",
+      "value": 5200000,
+      "approximate": true,
+      "fact": "Ireland's population is only now nearing its pre-famine 1840s peak."
+    },
+    {
+      "label": "Sweden",
+      "shortLabel": "Sweden",
+      "value": 10500000,
+      "approximate": true,
+      "fact": "A large country by area but modest by headcount."
+    },
+    {
+      "label": "Canada",
+      "shortLabel": "Canada",
+      "value": 39000000,
+      "approximate": true,
+      "fact": "The second-largest country by land, yet fewer people than California."
+    },
+    {
+      "label": "Japan",
+      "shortLabel": "Japan",
+      "value": 124000000,
+      "approximate": true,
+      "fact": "Japan's population is shrinking and aging faster than almost anywhere."
+    },
+    {
+      "label": "India",
+      "shortLabel": "India",
+      "value": 1430000000,
+      "approximate": true,
+      "displayValue": "~1.43 billion",
+      "fact": "India recently overtook China as the most populous country."
+    }
+  ]
+}

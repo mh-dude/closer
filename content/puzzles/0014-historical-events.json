@@ -1,0 +1,56 @@
+{
+  "number": 14,
+  "slug": "historical-events",
+  "title": "How long ago did each event happen?",
+  "prompt": "Place each event by how long ago it took place.",
+  "category": "Age",
+  "unit": "years ago",
+  "scaleType": "logarithmic",
+  "minValue": 12,
+  "maxValue": 200000000,
+  "difficulty": "hard",
+  "items": [
+    {
+      "label": "The Berlin Wall fell",
+      "shortLabel": "Berlin Wall",
+      "value": 37,
+      "approximate": true,
+      "fact": "The wall came down in 1989 after 28 years dividing the city."
+    },
+    {
+      "label": "The first Moon landing",
+      "shortLabel": "Moon landing",
+      "value": 57,
+      "approximate": true,
+      "fact": "Apollo 11 touched down in 1969, watched live by 600 million people."
+    },
+    {
+      "label": "Gutenberg’s printing press",
+      "shortLabel": "Printing press",
+      "value": 586,
+      "approximate": true,
+      "fact": "Around 1440, movable type began making books affordable."
+    },
+    {
+      "label": "The fall of Rome",
+      "shortLabel": "Fall of Rome",
+      "value": 1550,
+      "approximate": true,
+      "fact": "The Western Roman Empire dissolved in 476 CE."
+    },
+    {
+      "label": "The end of the last Ice Age",
+      "shortLabel": "Ice Age ends",
+      "value": 11700,
+      "approximate": true,
+      "fact": "As the ice retreated, humans began farming and settling."
+    },
+    {
+      "label": "The dinosaurs went extinct",
+      "shortLabel": "Dino extinction",
+      "value": 66000000,
+      "approximate": true,
+      "fact": "A city-sized asteroid strike ended the age of dinosaurs."
+    }
+  ]
+}
