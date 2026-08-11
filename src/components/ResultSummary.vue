@@ -89,6 +89,7 @@ onMounted(() => {
       <ResultItem
         v-for="r in result.items"
         :key="r.itemId"
+        :puzzle="puzzle"
         :item="itemById[r.itemId]"
         :result="r"
       />
