@@ -154,7 +154,9 @@ const armedItemId = ref<string | null>(null)
 function onDocumentPointerdown(event: PointerEvent) {
   if (!armedItemId.value) return
   const target = event.target as HTMLElement | null
-  if (target?.closest('.scale__track, .tray__chip')) return
+  // The whole board, not just the track: a thumb aimed at the rail that lands
+  // in the card's padding shouldn't cost you the item you were holding.
+  if (target?.closest('.play__board, .tray__chip')) return
   armedItemId.value = null
 }
 

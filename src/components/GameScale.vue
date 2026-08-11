@@ -156,10 +156,9 @@ function positionAt(clientX: number): number | null {
 
 function onMarkerPointerdown(itemId: string, event: PointerEvent) {
   if (props.submitted) return
-  // A held item lands wherever you click, even on top of an existing marker.
+  // A held item lands wherever you press, even on top of an existing marker.
   if (props.armedItemId) {
-    const position = positionAt(event.clientX)
-    if (position !== null) emit('place', props.armedItemId, position)
+    beginArmedPlacement(event)
     return
   }
   const el = (event.target as HTMLElement).closest('.marker__handle') as HTMLElement | null
@@ -172,8 +171,7 @@ function onTrackPointerdown(event: PointerEvent) {
   if (props.submitted) return
 
   if (props.armedItemId) {
-    const position = positionAt(event.clientX)
-    if (position !== null) emit('place', props.armedItemId, position)
+    beginArmedPlacement(event)
     return
   }
 
@@ -197,19 +195,75 @@ function onTrackPointerdown(event: PointerEvent) {
   }
 }
 
-/** Preview under the cursor while carrying an item. Mouse only — touch has no
- *  hover, so on a phone the first tap simply lands it. */
-const armedHover = ref<number | null>(null)
+/**
+ * Where a held item would land, previewed before anything commits.
+ *
+ * A mouse gets this on hover. Touch has no hover, so the preview appears the
+ * moment a finger lands on the track and follows it from there — the placement
+ * commits on lift, which leaves room to slide into position first.
+ */
+const armedPreview = ref<number | null>(null)
 
-function onTrackHover(event: PointerEvent) {
-  if (!props.armedItemId || props.submitted || event.pointerType === 'touch') return
-  armedHover.value = positionAt(event.clientX)
+/** The pointer currently choosing a spot for the held item; -1 when none. */
+const placingPointerId = ref(-1)
+
+function beginArmedPlacement(event: PointerEvent) {
+  const track = trackRef.value
+  // A press on a marker reaches this twice — once from the marker, once as it
+  // bubbles to the track — and only the first should take the pointer.
+  if (!track || placingPointerId.value !== -1) return
+  placingPointerId.value = event.pointerId
+  // Captured on the track, so the preview keeps following a finger that
+  // wanders off it mid-gesture.
+  track.setPointerCapture(event.pointerId)
+  armedPreview.value = positionAt(event.clientX)
+}
+
+function endArmedPlacement() {
+  const track = trackRef.value
+  if (track?.hasPointerCapture(placingPointerId.value)) {
+    track.releasePointerCapture(placingPointerId.value)
+  }
+  placingPointerId.value = -1
+}
+
+function onTrackPointermove(event: PointerEvent) {
+  if (props.submitted || !props.armedItemId) return
+  if (placingPointerId.value !== -1) {
+    if (event.pointerId !== placingPointerId.value) return
+    if (event.cancelable) event.preventDefault()
+    armedPreview.value = positionAt(event.clientX)
+    return
+  }
+  if (event.pointerType === 'touch') return
+  armedPreview.value = positionAt(event.clientX)
+}
+
+function onTrackPointerup(event: PointerEvent) {
+  if (event.pointerId !== placingPointerId.value) return
+  const itemId = props.armedItemId
+  const position = positionAt(event.clientX)
+  endArmedPlacement()
+  if (itemId && position !== null) emit('place', itemId, position)
+}
+
+/** The gesture became a scroll: drop the preview, keep holding the item. */
+function onTrackPointercancel(event: PointerEvent) {
+  if (event.pointerId !== placingPointerId.value) return
+  endArmedPlacement()
+  armedPreview.value = null
+}
+
+function onTrackPointerleave() {
+  if (placingPointerId.value === -1) armedPreview.value = null
 }
 
 watch(
   () => props.armedItemId,
   (armed) => {
-    if (!armed) armedHover.value = null
+    if (armed) return
+    endArmedPlacement()
+    armedPreview.value = null
   },
 )
 
@@ -219,10 +273,17 @@ const itemById = computed(() =>
 
 /** The drag preview wins; otherwise show where a held item would land. */
 const activeHint = computed(() => {
-  if (props.dropHint) return props.dropHint
-  if (props.armedItemId && armedHover.value !== null) {
+  if (props.dropHint) return { ...props.dropHint, live: false }
+  if (props.armedItemId && armedPreview.value !== null) {
     const item = itemById.value[props.armedItemId]
-    if (item) return { label: item.shortLabel || item.label, position: armedHover.value }
+    if (item) {
+      return {
+        label: item.shortLabel || item.label,
+        position: armedPreview.value,
+        // A finger is on the track choosing the spot, so commit to showing it.
+        live: placingPointerId.value !== -1,
+      }
+    }
   }
   return null
 })
@@ -248,8 +309,10 @@ watch(
         'scale__track--armed': !!armedItemId && !submitted,
       }"
       @pointerdown="onTrackPointerdown"
-      @pointermove="onTrackHover"
-      @pointerleave="armedHover = null"
+      @pointermove="onTrackPointermove"
+      @pointerup="onTrackPointerup"
+      @pointercancel="onTrackPointercancel"
+      @pointerleave="onTrackPointerleave"
     >
       <div class="rail" aria-hidden="true"></div>
 
@@ -294,10 +357,14 @@ watch(
       <div
         v-if="activeHint"
         class="drophint"
-        :class="`drophint--edge-${edgeFor(activeHint.position)}`"
+        :class="[
+          `drophint--edge-${edgeFor(activeHint.position)}`,
+          { 'drophint--live': activeHint.live },
+        ]"
         :style="{ left: `${activeHint.position * 100}%` }"
         aria-hidden="true"
       >
+        <span class="drophint__guide"></span>
         <span class="drophint__dot"></span>
         <span class="drophint__label">{{ activeHint.label }}</span>
       </div>
@@ -385,6 +452,9 @@ watch(
 }
 .scale__track--armed {
   cursor: crosshair;
+  /* While holding an item the track owns the gesture outright, so sliding a
+     finger across it previews a position instead of scrolling the page away. */
+  touch-action: none;
 }
 
 /*
@@ -530,6 +600,22 @@ watch(
   border-radius: 50%;
   border: 2px dashed var(--guess);
   background: var(--paper-raised);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+/*
+ * Stem up to the label, so a finger sitting on the rail can still see which
+ * gradation it has picked out — the fingertip covers the dot itself.
+ */
+.drophint__guide {
+  position: absolute;
+  bottom: var(--rail-top);
+  left: 0;
+  width: 1px;
+  height: calc(var(--axis-band) + var(--row-1));
+  transform: translateX(-50%);
+  background: var(--guess);
+  opacity: 0;
+  transition: opacity 0.12s ease;
 }
 .drophint__label {
   position: absolute;
@@ -556,6 +642,23 @@ watch(
   left: auto;
   right: -6px;
   transform: none;
+}
+
+/* A finger is down and choosing: the preview stops being a hint and starts
+   looking like the marker it is about to become. */
+.drophint--live .drophint__guide {
+  opacity: 0.5;
+}
+.drophint--live .drophint__dot {
+  border-style: solid;
+  background: color-mix(in srgb, var(--guess) 20%, var(--paper-raised));
+  transform: scale(1.1);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--guess) 14%, transparent);
+}
+.drophint--live .drophint__label {
+  border-style: solid;
+  background: var(--guess);
+  color: #fff;
 }
 
 .legend {

@@ -22,11 +22,18 @@ function onPointerdown(item: PuzzleItem, event: PointerEvent) {
   <div v-if="items.length" class="tray" aria-label="Items still to place">
     <p class="tray__hint">
       <template v-if="armedId">
-        Now click the scale to place it — or click anywhere else to put it back.
+        <span class="tray__fine"
+          >Now click the scale to place it — or click anywhere else to put it back.</span
+        >
+        <span class="tray__coarse"
+          >Touch the scale and slide to aim, then lift to place — or tap it again to put it
+          back.</span
+        >
       </template>
       <template v-else>
-        <span class="tray__count">{{ items.length }}</span> to place — click one, then click where
-        it belongs. Dragging works too.
+        <span class="tray__count">{{ items.length }}</span>
+        <span class="tray__fine"> to place — click one, then click where it belongs. Dragging works too.</span>
+        <span class="tray__coarse"> to place — tap one, then tap the scale. Dragging works too.</span>
       </template>
     </p>
     <ul class="tray__list">
@@ -72,6 +79,18 @@ function onPointerdown(item: PuzzleItem, event: PointerEvent) {
   font-weight: 700;
   color: var(--ink);
 }
+/* Same instruction, in the verb that matches the pointer you actually have. */
+.tray__coarse {
+  display: none;
+}
+@media (pointer: coarse) {
+  .tray__fine {
+    display: none;
+  }
+  .tray__coarse {
+    display: inline;
+  }
+}
 .tray__list {
   list-style: none;
   margin: 0;
@@ -113,12 +132,16 @@ function onPointerdown(item: PuzzleItem, event: PointerEvent) {
   border-style: dashed;
   cursor: grabbing;
 }
-/* Held: lifted off the tray and following the next click. */
-.tray__chip--armed {
+/* Held: literally picked up off the tray, and following the next tap. */
+.tray__chip--armed,
+.tray__chip--armed:active {
   background: var(--guess);
   border-color: var(--guess);
   color: #fff;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--guess) 22%, transparent);
+  transform: translateY(-4px) scale(1.06);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--guess) 22%, transparent),
+    var(--shadow-md);
 }
 @media (hover: hover) {
   .tray__chip--armed:hover {
