@@ -19,12 +19,14 @@ const itemById = computed(() =>
   Object.fromEntries(props.puzzle.items.map((i) => [i.id, i])),
 )
 
+// Calibrated against the scored-above-chance range: ranking the items right
+// but guessing the magnitudes lands around 59, a sharp player around 82.
 const headline = computed(() => {
   const t = props.result.total
-  if (t >= 90) return 'Superb.'
-  if (t >= 75) return 'Great instincts.'
-  if (t >= 55) return 'Solid guessing.'
-  if (t >= 35) return 'Room to sharpen.'
+  if (t >= 85) return 'Superb.'
+  if (t >= 65) return 'Great instincts.'
+  if (t >= 45) return 'Solid guessing.'
+  if (t >= 25) return 'Room to sharpen.'
   return 'A tough one.'
 })
 

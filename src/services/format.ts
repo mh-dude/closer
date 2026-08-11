@@ -56,6 +56,10 @@ function duration(seconds: number): string {
 }
 
 function length(meters: number): string {
+  // Below a millimetre the metric prefixes keep going — without these, a
+  // nanometre-scale puzzle renders its whole axis as "0 mm".
+  if (meters < 1e-6) return `${sig(meters * 1e9)} nm`
+  if (meters < 1e-3) return `${sig(meters * 1e6)} µm`
   if (meters < 0.01) return `${sig(meters * 1000)} mm`
   if (meters < 1) return `${sig(meters * 100)} cm`
   if (meters < 1000) return `${sig(meters)} m`
@@ -106,5 +110,6 @@ export function formatTick(value: number, unit: string): string {
   if (value < 60) return `${sig(value)} sec`
   if (value < 3600) return `${sig(value / 60)} min`
   if (value < 86400) return `${sig(value / 3600)} hr`
-  return `${sig(value / 86400)} d`
+  const days = value / 86400
+  return `${sig(days)} ${days === 1 ? 'day' : 'days'}`
 }

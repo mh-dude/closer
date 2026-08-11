@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Puzzle } from '@/types/puzzle'
 import type { Placements, PuzzleResult } from '@/types/session'
-import { minorTicks, positionToValue, scaleTicks } from '@/services/scale'
+import { scaleTicks } from '@/services/scale'
 import { formatTick } from '@/services/format'
 import { useScaleInteraction } from '@/composables/useScaleInteraction'
 import ScaleMarker from './ScaleMarker.vue'
@@ -39,45 +39,79 @@ const { startDrag } = useScaleInteraction(getTrackRect, (itemId, position) =>
 // The tray needs the track geometry to turn a drop point into a position.
 defineExpose({ getTrackRect })
 
-/** Labelled gridlines, plus the bare marks between them. */
-const ticks = computed(() => {
-  const major = scaleTicks(
-    props.puzzle.minValue,
-    props.puzzle.maxValue,
-    props.puzzle.scaleType,
-    props.puzzle.unit,
-  ).map((tick, index) => ({
-    ...tick,
-    label: formatTick(tick.value, props.puzzle.unit),
-    // Every other label is dropped on narrow screens so they don't collide.
-    crowded: index % 2 === 1,
-  }))
-  const minor = minorTicks(
-    props.puzzle.minValue,
-    props.puzzle.maxValue,
-    props.puzzle.scaleType,
-  ).map((tick) => ({ ...tick, label: '', crowded: false }))
-  return [...minor, ...major]
-})
+/** How much of the track an end label needs to itself. */
+const END_GAP = 0.1
 
 /**
- * Says outright that the scale is logarithmic, and names the value at the
- * halfway point. The midpoint is the concrete fact that breaks the linear
- * assumption: on puzzle #1 the middle is 38 seconds, not 4 hours.
+ * The axis: the scale's two endpoints and the gridlines between them.
+ *
+ * The endpoints are ticks like any other rather than headings floating above
+ * the board — the range and its gradations are one scale, so they read as one
+ * row. Generated ticks that would crowd an endpoint are dropped to a bare mark.
  */
-const scaleNote = computed(() => {
-  if (props.puzzle.scaleType !== 'logarithmic') return null
-  const middle = positionToValue(
-    0.5,
-    props.puzzle.minValue,
-    props.puzzle.maxValue,
-    props.puzzle.scaleType,
-  )
-  // Two significant figures — "240,000 years" makes the point that "244,949"
-  // only muddies with false precision.
-  const step = Math.pow(10, Math.floor(Math.log10(Math.abs(middle))) - 1)
-  const rounded = Math.round(middle / step) * step
-  return `Log scale · middle is ${formatTick(rounded, props.puzzle.unit)}`
+const ticks = computed(() => {
+  const { minValue, maxValue, scaleType, unit, minLabel, maxLabel } = props.puzzle
+
+  const between = scaleTicks(minValue, maxValue, scaleType, unit)
+    .filter((tick) => tick.position > END_GAP && tick.position < 1 - END_GAP)
+    .map((tick) => ({ ...tick, label: formatTick(tick.value, unit), endpoint: false }))
+
+  const all = [
+    { position: 0, value: minValue, label: minLabel, endpoint: true },
+    ...between,
+    { position: 1, value: maxValue, label: maxLabel, endpoint: true },
+  ]
+
+  // Alternating sides doubles the room each label has, so a phone-width track
+  // can keep gradations it would otherwise have to drop.
+  return all.map((tick, index) => ({
+    ...tick,
+    side: index % 2 === 0 ? ('below' as const) : ('above' as const),
+  }))
+})
+
+const axisRef = ref<HTMLElement | null>(null)
+
+/**
+ * Hide gridline labels that would collide, measuring the rendered text.
+ *
+ * A percentage-based rule can't do this: how much room "8 hours" needs depends
+ * on the font and the track width, not on where it sits. The endpoints always
+ * win — they carry the scale's range.
+ */
+const LABEL_GAP = 10
+
+function layoutAxisLabels() {
+  const axis = axisRef.value
+  if (!axis) return
+  const all = [...axis.querySelectorAll<HTMLElement>('.axis__label')]
+  all.forEach((label) => (label.style.display = ''))
+
+  // Each side crowds only against itself, which is the whole point of
+  // alternating them.
+  for (const side of ['below', 'above']) {
+    const labels = all.filter((l) => l.dataset.side === side)
+    if (labels.length < 2) continue
+    let keptRight = -Infinity
+    for (const label of labels) {
+      const rect = label.getBoundingClientRect()
+      // An endpoint always wins its slot; a gradation yields to it.
+      if (rect.left < keptRight + LABEL_GAP && label.dataset.endpoint !== 'true') {
+        label.style.display = 'none'
+      } else {
+        keptRight = rect.right
+      }
+    }
+  }
+}
+
+watch(ticks, () => nextTick(layoutAxisLabels), { immediate: true })
+
+onMounted(() => {
+  layoutAxisLabels()
+  const observer = new ResizeObserver(layoutAxisLabels)
+  if (axisRef.value) observer.observe(axisRef.value)
+  onBeforeUnmount(() => observer.disconnect())
 })
 
 const placedItems = computed(() =>
@@ -206,12 +240,6 @@ watch(
 
 <template>
   <figure class="scale">
-    <figcaption class="scale__caption">
-      <span class="scale__end">{{ puzzle.minLabel }}</span>
-      <span v-if="scaleNote" class="scale__note">{{ scaleNote }}</span>
-      <span class="scale__end scale__end--max">{{ puzzle.maxLabel }}</span>
-    </figcaption>
-
     <div
       ref="trackRef"
       class="scale__track"
@@ -223,6 +251,30 @@ watch(
       @pointermove="onTrackHover"
       @pointerleave="armedHover = null"
     >
+      <div class="rail" aria-hidden="true"></div>
+
+      <!-- The axis hangs off both faces of the rail, alternating side by side. -->
+      <div ref="axisRef" class="axis" aria-hidden="true">
+        <span
+          v-for="tick in ticks"
+          :key="`t-${tick.value}`"
+          class="axis__tick"
+          :class="[
+            `axis__tick--${tick.side}`,
+            {
+              'axis__tick--end': tick.endpoint,
+              'axis__tick--first': tick.endpoint && tick.position === 0,
+              'axis__tick--last': tick.endpoint && tick.position === 1,
+            },
+          ]"
+          :style="{ left: `${tick.position * 100}%` }"
+        >
+          <span class="axis__label" :data-side="tick.side" :data-endpoint="tick.endpoint">{{
+            tick.label
+          }}</span>
+        </span>
+      </div>
+
       <!-- Results: the error bar between each guess and its true answer -->
       <template v-if="submitted && result">
         <div
@@ -281,26 +333,6 @@ watch(
         ></div>
       </template>
 
-      <p v-if="!placedItems.length && !submitted" class="scale__empty">
-        Drop each item where you think it belongs
-      </p>
-
-      <div class="rail" aria-hidden="true"></div>
-    </div>
-
-    <div class="axis" aria-hidden="true">
-      <span
-        v-for="tick in ticks"
-        :key="`${tick.major ? 'M' : 'm'}-${tick.value}`"
-        class="axis__tick"
-        :class="{
-          'axis__tick--minor': !tick.major,
-          'axis__tick--crowded': tick.crowded,
-        }"
-        :style="{ left: `${tick.position * 100}%` }"
-      >
-        <span v-if="tick.major" class="axis__label">{{ tick.label }}</span>
-      </span>
     </div>
 
     <!-- Two series on the board once submitted, so identity is never shape-alone. -->
@@ -319,53 +351,32 @@ watch(
 </template>
 
 <style scoped>
+/*
+ * Everything is measured from the bottom of the track, through the rail.
+ * The axis hangs off both faces of the rail, so the rail is not at the
+ * bottom of the box — hence --rail-bottom rather than a bare 0.
+ */
 .scale {
-  --rail-h: 8px;
-  /* Label rows above the rail, measured from the top of the rail. */
-  --row-1: 16px;
-  --row-2: 44px;
-  --row-3: 72px;
-  --marker-band: 102px;
+  --rail-h: 28px;
+  /* One axis band: a tick stub plus the label it carries. */
+  --axis-band: 22px;
+  --rail-bottom: var(--axis-band);
+  --rail-mid: calc(var(--rail-bottom) + var(--rail-h) / 2);
+  --rail-top: calc(var(--rail-bottom) + var(--rail-h));
+  /* Marker labels start above the upper axis band. */
+  --label-base: calc(var(--rail-top) + var(--axis-band));
+  /* Label rows above that, and the label's own height. */
+  --row-1: 4px;
+  --row-2: 32px;
+  --row-3: 60px;
+  --label-h: 22px;
   width: 100%;
   margin: 0;
 }
 
-/* Caption: the scale's range, and what kind of scale it is. */
-.scale__caption {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.scale__end {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--ink);
-  white-space: nowrap;
-}
-.scale__end--max {
-  text-align: right;
-}
-.scale__note {
-  flex: 0 1 auto;
-  min-width: 0;
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: var(--accent-ink);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-  border-radius: 999px;
-  padding: 2px 9px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .scale__track {
   position: relative;
-  height: var(--marker-band);
+  height: calc(var(--label-base) + var(--row-3) + var(--label-h));
   width: 100%;
   touch-action: pan-y;
   -webkit-user-select: none;
@@ -376,57 +387,61 @@ watch(
   cursor: crosshair;
 }
 
-/* The rail is the interactive track, so it carries real weight — not the
-   hairline an axis rule would use. */
+/*
+ * The rail is the interactive track, not an axis rule — it carries real
+ * weight. Recessed rather than raised: the inset highlight reads as a groove
+ * the markers are seated in, which also gives a fat touch target something to
+ * be, rather than looking like a stray bar.
+ */
 .rail {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: var(--rail-bottom);
   height: var(--rail-h);
-  border-radius: var(--rail-h);
-  background: var(--line-strong);
+  border-radius: 999px;
+  background: var(--line);
+  box-shadow:
+    inset 0 1px 3px color-mix(in srgb, var(--ink) 16%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, #fff 55%, transparent);
+  transition: background 0.15s ease;
 }
 .scale__track--armed .rail {
-  background: color-mix(in srgb, var(--guess) 45%, var(--line-strong));
+  background: color-mix(in srgb, var(--guess) 28%, var(--line));
 }
 
-/* The marker band is empty until the first item lands; say what goes there
-   rather than leaving a void above the rail. */
-.scale__empty {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--rail-h) + 18px);
-  transform: translateX(-50%);
-  margin: 0;
-  white-space: nowrap;
-  font-size: 0.8rem;
-  color: var(--ink-muted);
-  opacity: 0.75;
-  pointer-events: none;
-}
 
-/* Axis: short ticks hanging below the rail, labels under them. */
+/* Axis: stubs off each face of the rail, labels beyond them. */
 .axis {
-  position: relative;
-  height: 30px;
-  margin-top: 2px;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 .axis__tick {
   position: absolute;
-  top: 0;
   width: 1px;
-  height: 7px;
+  height: 6px;
   transform: translateX(-50%);
   background: var(--line-strong);
 }
-.axis__tick--minor {
-  height: 4px;
-  opacity: 0.55;
+.axis__tick--below {
+  bottom: calc(var(--rail-bottom) - 6px);
 }
+.axis__tick--above {
+  bottom: var(--rail-top);
+}
+/* The two endpoints carry the scale's range, so they read a step stronger
+   than the gradations between them. */
+.axis__tick--end {
+  height: 8px;
+  background: var(--ink-muted);
+}
+.axis__tick--end.axis__tick--below {
+  bottom: calc(var(--rail-bottom) - 8px);
+}
+
 .axis__label {
   position: absolute;
-  top: 9px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -434,14 +449,37 @@ watch(
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
+  /* Masks the marker stems that pass through the upper band. */
+  background: var(--paper-raised);
+  padding: 0 4px;
+}
+.axis__tick--below .axis__label {
+  top: 8px;
+}
+.axis__tick--above .axis__label {
+  bottom: 8px;
+}
+.axis__tick--end .axis__label {
+  font-weight: 700;
+  color: var(--ink);
+}
+/* Anchored inward so an end label can't overhang the track. */
+.axis__tick--first .axis__label {
+  left: 0;
+  transform: none;
+}
+.axis__tick--last .axis__label {
+  left: auto;
+  right: 0;
+  transform: none;
 }
 
 /* Error bar: sits just above the rail, spanning guess to answer. */
 .error {
   position: absolute;
-  bottom: calc(var(--rail-h) + 3px);
-  height: 3px;
-  border-radius: 3px;
+  bottom: calc(var(--rail-mid) - 3px);
+  height: 6px;
+  border-radius: 6px;
   background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
@@ -457,13 +495,15 @@ watch(
 /* True answer: a diamond on the rail. Shape carries identity alongside hue. */
 .answer {
   position: absolute;
-  bottom: calc(var(--rail-h) / 2);
-  width: 14px;
-  height: 14px;
-  margin: 0 0 -7px -7px;
+  bottom: var(--rail-mid);
+  width: 16px;
+  height: 16px;
+  margin: 0 0 -8px -8px;
   transform: rotate(45deg);
   background: var(--answer);
-  box-shadow: 0 0 0 2px var(--paper-raised);
+  box-shadow:
+    0 0 0 2.5px var(--paper-raised),
+    0 1px 3px color-mix(in srgb, var(--ink) 25%, transparent);
   opacity: 0;
   transition: opacity 0.35s ease;
   z-index: 4;
@@ -482,18 +522,18 @@ watch(
 }
 .drophint__dot {
   position: absolute;
-  bottom: calc(var(--rail-h) / 2);
+  bottom: var(--rail-mid);
   left: 0;
-  width: 16px;
-  height: 16px;
-  margin: 0 0 -8px -8px;
+  width: 20px;
+  height: 20px;
+  margin: 0 0 -10px -10px;
   border-radius: 50%;
   border: 2px dashed var(--guess);
   background: var(--paper-raised);
 }
 .drophint__label {
   position: absolute;
-  bottom: calc(var(--rail-h) + 16px);
+  bottom: calc(var(--label-base) + var(--row-1));
   left: 0;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -555,17 +595,10 @@ watch(
 
 @media (max-width: 640px) {
   .scale {
-    --row-1: 14px;
-    --row-2: 39px;
-    --row-3: 64px;
-    --marker-band: 92px;
-  }
-  .axis__tick--crowded .axis__label {
-    display: none;
-  }
-  .scale__note {
-    font-size: 0.66rem;
-    padding: 2px 7px;
+    --axis-band: 20px;
+    --row-1: 2px;
+    --row-2: 28px;
+    --row-3: 54px;
   }
   .legend {
     gap: 4px 14px;
@@ -577,10 +610,11 @@ watch(
    label rows are sufficient, so the third is folded away. */
 @media (max-height: 560px) {
   .scale {
-    --row-1: 14px;
-    --row-2: 39px;
-    --row-3: 39px;
-    --marker-band: 68px;
+    --rail-h: 22px;
+    --axis-band: 18px;
+    --row-1: 0px;
+    --row-2: 26px;
+    --row-3: 26px;
   }
 }
 </style>

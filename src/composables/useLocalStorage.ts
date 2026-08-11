@@ -1,8 +1,30 @@
 import { ref, watch } from 'vue'
-import type { StoredAppState, StoredPuzzleSession } from '@/types/session'
+import type { Placements, StoredAppState, StoredPuzzleSession } from '@/types/session'
+import { puzzles } from '@/data/puzzles'
+import { scorePuzzle } from '@/services/scoring'
 
 const STORAGE_KEY = 'closer:app-state'
-const VERSION = 2
+const VERSION = 3
+
+/**
+ * Totals saved before v3 came from the old curve, which had no chance baseline
+ * and read roughly twenty points high. Placements are the source of truth, so
+ * rescore them — otherwise Browse lists an inflated total next to a puzzle that
+ * scores lower the moment you reopen it.
+ */
+function rescoreSessions(
+  sessions: Record<string, StoredPuzzleSession>,
+): Record<string, StoredPuzzleSession> {
+  const byId = new Map(puzzles.map((p) => [p.id, p]))
+  return Object.fromEntries(
+    Object.entries(sessions).map(([id, session]) => {
+      const puzzle = byId.get(id)
+      if (!puzzle || !session?.completed) return [id, session]
+      const placements: Placements = session.placements ?? {}
+      return [id, { ...session, total: scorePuzzle(puzzle, placements).total }]
+    }),
+  )
+}
 
 function emptyState(): StoredAppState {
   return { version: VERSION, sessions: {}, instructionsDismissed: false }
@@ -28,7 +50,15 @@ function loadState(): StoredAppState {
     // v1 carried a `feedback` array from the playtest build; drop it and keep
     // the sessions. v1 keyed sessions by 'p01'-style ids rather than slugs, so
     // those entries are inert — harmless, and cleared by Reset all progress.
-    if (parsed?.version === 1 || parsed?.version === VERSION) {
+    if (parsed?.version === 1 || parsed?.version === 2) {
+      return {
+        version: VERSION,
+        sessions: rescoreSessions(parsed.sessions ?? {}),
+        instructionsDismissed: parsed.instructionsDismissed ?? false,
+      }
+    }
+
+    if (parsed?.version === VERSION) {
       return {
         version: VERSION,
         sessions: parsed.sessions ?? {},

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Puzzle } from '@/types/puzzle'
 import { valueToPosition } from './scale'
-import { bandForError, scorePuzzle, scoringCurve, TOTAL_SCORE } from './scoring'
+import { bandForError, scorePuzzle, scoringCurve, skillCredit, TOTAL_SCORE } from './scoring'
 
 const puzzle: Puzzle = {
   id: 't1',
@@ -41,7 +41,7 @@ describe('scoringCurve', () => {
   })
 
   it('stays generous for small errors', () => {
-    expect(scoringCurve(0.1)).toBeGreaterThan(0.8)
+    expect(scoringCurve(0.1)).toBeGreaterThan(0.75)
   })
 
   it('penalizes large errors heavily', () => {
@@ -51,6 +51,22 @@ describe('scoringCurve', () => {
   it('is monotonically decreasing', () => {
     expect(scoringCurve(0.1)).toBeGreaterThan(scoringCurve(0.2))
     expect(scoringCurve(0.2)).toBeGreaterThan(scoringCurve(0.4))
+  })
+})
+
+describe('skillCredit', () => {
+  it('still pays full credit for a perfect guess', () => {
+    expect(skillCredit(0)).toBeCloseTo(1, 10)
+  })
+
+  it('pays nothing for a chance-level guess', () => {
+    // Credit hits the chance baseline around 0.216 of the track.
+    expect(skillCredit(0.25)).toBe(0)
+    expect(skillCredit(1)).toBe(0)
+  })
+
+  it('is never negative', () => {
+    for (let e = 0; e <= 1; e += 0.05) expect(skillCredit(e)).toBeGreaterThanOrEqual(0)
   })
 })
 
@@ -85,10 +101,27 @@ describe('scorePuzzle', () => {
     expect(result.total).toBeLessThan(20)
   })
 
-  it('treats a missing placement as position 0', () => {
+  it('scores a missing placement as zero rather than a guess at the far left', () => {
     const result = scorePuzzle(puzzle, {})
     expect(result.items).toHaveLength(puzzle.items.length)
-    expect(result.total).toBeGreaterThanOrEqual(0)
+    expect(result.total).toBe(0)
+    expect(result.items.every((i) => i.score === 0)).toBe(true)
+  })
+
+  it('does not reward leaving the lowest-value item unplaced', () => {
+    const p = perfectPlacements()
+    delete p['a']
+    const result = scorePuzzle(puzzle, p)
+    expect(result.items.find((i) => i.itemId === 'a')!.score).toBe(0)
+  })
+
+  it('sums the item scores to the total', () => {
+    const p = perfectPlacements()
+    p['a'] = (p['a'] as number) + 0.07
+    p['c'] = (p['c'] as number) - 0.13
+    const result = scorePuzzle(puzzle, p)
+    const summed = result.items.reduce((t, i) => t + i.score, 0)
+    expect(Math.abs(summed - result.total)).toBeLessThanOrEqual(1)
   })
 
   it('is deterministic', () => {

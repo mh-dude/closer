@@ -12,7 +12,7 @@ const route = useRoute()
       <component :is="Component" />
     </RouterView>
     <footer class="site-footer" :class="{ 'site-footer--tucked': route.name === 'play' }">
-      <p>Closer — a daily estimation game</p>
+      <p>Closer. An estimation game</p>
     </footer>
   </div>
 </template>

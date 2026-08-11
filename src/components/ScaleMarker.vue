@@ -119,7 +119,7 @@ function onPointerdown(event: PointerEvent) {
 /* The grabbable part: a finger-sized target centred on the rail. */
 .marker__handle {
   position: absolute;
-  bottom: calc(var(--rail-h) / 2);
+  bottom: var(--rail-mid);
   left: 0;
   width: 44px;
   height: 44px;
@@ -137,29 +137,35 @@ function onPointerdown(event: PointerEvent) {
   touch-action: auto;
 }
 
+/* Seated in the rail and standing slightly proud of it, so a fat track reads
+   as something the markers sit in rather than something they hide behind. */
 .marker__dot {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--guess);
   /* Surface ring, so a guess stays legible where it overlaps an answer. */
-  box-shadow: 0 0 0 2px var(--paper-raised);
+  box-shadow:
+    0 0 0 2.5px var(--paper-raised),
+    0 1px 3px color-mix(in srgb, var(--ink) 25%, transparent);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 .marker--selected .marker__dot {
-  transform: translate(-50%, -50%) scale(1.3);
-  box-shadow: 0 0 0 2px var(--paper-raised), 0 0 0 6px color-mix(in srgb, var(--guess) 25%, transparent);
+  transform: translate(-50%, -50%) scale(1.25);
+  box-shadow:
+    0 0 0 2.5px var(--paper-raised),
+    0 0 0 7px color-mix(in srgb, var(--guess) 22%, transparent);
 }
 
 .marker__stem {
   position: absolute;
   left: 0;
   width: 1px;
-  bottom: var(--rail-h);
+  bottom: var(--rail-top);
   transform: translateX(-50%);
   background: var(--guess);
   opacity: 0.4;
@@ -167,13 +173,13 @@ function onPointerdown(event: PointerEvent) {
   transition: height 0.15s ease;
 }
 .marker--near .marker__stem {
-  height: var(--row-1);
+  height: calc(var(--axis-band) + var(--row-1));
 }
 .marker--mid .marker__stem {
-  height: var(--row-2);
+  height: calc(var(--axis-band) + var(--row-2));
 }
 .marker--far .marker__stem {
-  height: var(--row-3);
+  height: calc(var(--axis-band) + var(--row-3));
 }
 
 .marker__label {
@@ -194,13 +200,13 @@ function onPointerdown(event: PointerEvent) {
   transition: bottom 0.15s ease;
 }
 .marker--near .marker__label {
-  bottom: calc(var(--rail-h) + var(--row-1));
+  bottom: calc(var(--label-base) + var(--row-1));
 }
 .marker--mid .marker__label {
-  bottom: calc(var(--rail-h) + var(--row-2));
+  bottom: calc(var(--label-base) + var(--row-2));
 }
 .marker--far .marker__label {
-  bottom: calc(var(--rail-h) + var(--row-3));
+  bottom: calc(var(--label-base) + var(--row-3));
 }
 .marker--edge-start .marker__label {
   left: -6px;

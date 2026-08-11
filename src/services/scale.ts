@@ -127,37 +127,3 @@ export function scaleTicks(
   return ticks
 }
 
-/**
- * Unlabelled marks between the major ticks.
- *
- * On a logarithmic scale these are the point of the exercise: 2 and 5 sit at
- * roughly 30% and 70% of the way through each decade, so the *uneven* spacing
- * is visible at a glance — the same trick a slide rule uses. On a linear scale
- * they land evenly, which reads as evenly for the same reason.
- */
-export function minorTicks(min: number, max: number, scaleType: ScaleType): ScaleTick[] {
-  const inside = (v: number) => {
-    const p = valueToPosition(v, min, max, scaleType)
-    return p > 0.02 && p < 0.98
-  }
-  const at = (value: number): ScaleTick => ({
-    position: valueToPosition(value, min, max, scaleType),
-    value,
-    major: false,
-  })
-
-  if (scaleType === 'logarithmic') {
-    const values: number[] = []
-    for (let e = Math.floor(Math.log10(min)); e <= Math.ceil(Math.log10(max)); e++) {
-      for (const m of [2, 5]) values.push(m * Math.pow(10, e))
-    }
-    return values.filter(inside).map((v) => at(v))
-  }
-
-  const majors = scaleTicks(min, max, scaleType)
-  if (majors.length < 2) return []
-  const half = (majors[1].value - majors[0].value) / 2
-  const values: number[] = []
-  for (let v = majors[0].value - half; v < max; v += half * 2) values.push(v)
-  return values.filter(inside).map((v) => at(v))
-}

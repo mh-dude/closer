@@ -38,3 +38,14 @@ describe('formatValue', () => {
     expect(formatValue(42, 'bananas')).toBe('42 bananas')
   })
 })
+
+describe('formatValue — sub-millimetre lengths', () => {
+  it('keeps going below a millimetre', () => {
+    // Regression: a nanometre-scale axis rendered every tick as "0 mm".
+    expect(formatValue(5e-10, 'meters')).toBe('0.5 nm')
+    expect(formatValue(1e-7, 'meters')).toBe('100 nm')
+    expect(formatValue(1e-6, 'meters')).toBe('1 µm')
+    expect(formatValue(5e-4, 'meters')).toBe('500 µm')
+    expect(formatValue(0.005, 'meters')).toBe('5 mm')
+  })
+})

@@ -1,5 +1,5 @@
 {
-  "number": 7,
+  "number": 25,
   "slug": "microscopic-diameters",
   "title": "How tiny is it?",
   "prompt": "Place each one by its characteristic diameter.",
@@ -15,7 +15,7 @@
     {
       "label": "B-form DNA double helix",
       "shortLabel": "DNA",
-      "value": 1.9e-09,
+      "value": 1.9e-9,
       "displayValue": "1.9 nm",
       "fact": "B-form DNA has a helical diameter of 1.9 nanometres and about ten base pairs per turn.",
       "sourceLabel": "NCBI Bookshelf / NIH",
@@ -24,7 +24,7 @@
     {
       "label": "Echovirus 30 particle",
       "shortLabel": "Echovirus",
-      "value": 3e-08,
+      "value": 3e-8,
       "displayValue": "~30 nm",
       "fact": "Researchers observed round picornavirus particles about 30 nanometres across by electron microscopy.",
       "sourceLabel": "CDC Emerging Infectious Diseases",
@@ -33,7 +33,7 @@
     {
       "label": "Pandemic H1N1 virion",
       "shortLabel": "H1N1",
-      "value": 1.04e-07,
+      "value": 1.04e-7,
       "displayValue": "104 nm",
       "fact": "Pandemic H1N1 virions were mostly spherical with an average diameter of 104 nanometres; some filaments reached 3.3 micrometres long.",
       "sourceLabel": "CDC Emerging Infectious Diseases",
@@ -42,7 +42,7 @@
     {
       "label": "E. coli bacterium",
       "shortLabel": "E. coli",
-      "value": 1e-06,
+      "value": 0.000001,
       "displayValue": "1 µm",
       "fact": "The referenced E. coli cell is a cylinder about 2 micrometres long and 1 micrometre in diameter.",
       "sourceLabel": "NCBI Bookshelf / NIH",
@@ -51,7 +51,7 @@
     {
       "label": "Human red blood cell",
       "shortLabel": "Red cell",
-      "value": 7.5e-06,
+      "value": 0.0000075,
       "displayValue": "~7.5 µm",
       "fact": "Normal human red blood cells are biconcave disks with a mean diameter of about 7.5 micrometres.",
       "sourceLabel": "NCBI Bookshelf / NIH",

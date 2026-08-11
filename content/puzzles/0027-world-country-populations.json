@@ -1,6 +1,6 @@
 {
-  "number": 9,
-  "slug": "country-populations",
+  "number": 27,
+  "slug": "world-country-populations",
   "title": "How many people live in each country?",
   "prompt": "Place each country by its 2025 population.",
   "category": "Population",
@@ -19,7 +19,6 @@
     },
     {
       "label": "New Zealand",
-      "shortLabel": "New Zealand",
       "value": 5324700,
       "fact": "The World Bank lists New Zealand's 2025 population growth rate at 0.7 percent.",
       "sourceLabel": "World Bank",

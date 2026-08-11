@@ -32,7 +32,7 @@ export interface StoredPuzzleSession {
 
 export interface StoredAppState {
   /** Bumped when the stored shape changes; see useLocalStorage for migrations. */
-  version: 2
+  version: 3
   sessions: Record<string, StoredPuzzleSession>
   instructionsDismissed: boolean
 }
