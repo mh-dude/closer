@@ -38,11 +38,22 @@ export function skillCredit(error: number): number {
   return Math.max(0, (scoringCurve(error) - CHANCE_BASELINE) / (1 - CHANCE_BASELINE))
 }
 
+/**
+ * The error at which the curve meets chance and credit reaches zero (~0.216).
+ *
+ * Derived rather than written down, so the bands can't drift out of step with
+ * the curve the way they did when the baseline was introduced — "Off" ran to
+ * 0.25 and paid nothing across its upper half, which read as two different
+ * verdicts for the same zero.
+ */
+export const ZERO_CREDIT_ERROR = SIGMA * Math.sqrt(-Math.log(CHANCE_BASELINE))
+
 export function bandForError(error: number): ScoreBand {
   if (error <= 0.02) return 'exact'
   if (error <= 0.06) return 'very-close'
   if (error <= 0.12) return 'close'
-  if (error <= 0.25) return 'off'
+  // "Far off" means exactly one thing: you earned nothing for it.
+  if (error < ZERO_CREDIT_ERROR) return 'off'
   return 'far-off'
 }
 

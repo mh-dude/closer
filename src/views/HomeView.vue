@@ -16,8 +16,13 @@ const dailyPuzzle = computed(() =>
   loaded.value && puzzles.value.length ? getDailyPuzzle(puzzles.value) : null,
 )
 
+/**
+ * Counted over the puzzles, not the stored sessions: the v1 migration carries
+ * forward entries keyed by ids no puzzle has any more, and counting those reads
+ * as "31 of 28 played".
+ */
 const completedCount = computed(
-  () => Object.values(state.value.sessions).filter((s) => s.completed).length,
+  () => puzzles.value.filter((p) => state.value.sessions[p.id]?.completed).length,
 )
 
 const dailyDone = computed(() =>

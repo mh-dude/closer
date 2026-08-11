@@ -21,7 +21,7 @@ export function buildShareText(puzzle: Puzzle, result: PuzzleResult): string {
 }
 
 export interface ShareOutcome {
-  method: 'share' | 'clipboard'
+  method: 'share' | 'clipboard' | 'cancelled'
   ok: boolean
 }
 
@@ -34,8 +34,14 @@ export async function shareResult(text: string): Promise<ShareOutcome> {
     try {
       await navigator.share({ text })
       return { method: 'share', ok: true }
-    } catch {
-      // User dismissed the sheet or share failed — fall through to clipboard.
+    } catch (error) {
+      // Closing the sheet is a decision, not a failure. Falling through would
+      // copy something they just declined to send and report it as done.
+      if ((error as Error | null)?.name === 'AbortError') {
+        return { method: 'cancelled', ok: false }
+      }
+      // Anything else — no permission, a payload the platform won't take —
+      // still deserves the clipboard fallback.
     }
   }
 

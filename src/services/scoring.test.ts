@@ -78,6 +78,16 @@ describe('bandForError', () => {
     expect(bandForError(0.2)).toBe('off')
     expect(bandForError(0.6)).toBe('far-off')
   })
+
+  // The bands and the curve drifted apart once already: "Off" ran past the
+  // point where credit reaches zero, so its upper half paid the same nothing
+  // as "Far off".
+  it('reserves far-off for errors that earn nothing, and pays every other band', () => {
+    for (let e = 0; e <= 1; e += 0.005) {
+      if (bandForError(e) === 'far-off') expect(skillCredit(e)).toBe(0)
+      else expect(skillCredit(e)).toBeGreaterThan(0)
+    }
+  })
 })
 
 describe('scorePuzzle', () => {

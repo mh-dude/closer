@@ -14,6 +14,11 @@ const status = ref('')
 async function onShare() {
   const text = buildShareText(props.puzzle, props.result)
   const outcome = await shareResult(text)
+  if (outcome.method === 'cancelled') {
+    // They closed the sheet; saying anything about it is noise.
+    status.value = ''
+    return
+  }
   if (!outcome.ok) {
     status.value = 'Could not copy — select the text below to copy it manually.'
     return

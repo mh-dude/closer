@@ -13,7 +13,8 @@ const emit = defineEmits<{
     <div class="instructions__body">
       <h2 class="instructions__title">How to play</h2>
       <ol class="instructions__steps">
-        <li>Drag an item from below onto the scale — or tap it to drop it in the middle.</li>
+        <li>Pick up an item from below, then choose its spot on the scale — or drag it
+          straight there.</li>
         <li>Nudge its marker by dragging, tapping the scale, or using the arrow keys.</li>
         <li>
           Read the gridline labels before you place anything — many scales are logarithmic, so

@@ -21,8 +21,9 @@ const visiblePuzzles = computed(() =>
     : puzzles.value.filter((p) => p.category === activeCategory.value),
 )
 
+/** Over the puzzles, not the stored sessions — see HomeView. */
 const completedCount = computed(
-  () => Object.values(state.value.sessions).filter((s) => s.completed).length,
+  () => puzzles.value.filter((p) => state.value.sessions[p.id]?.completed).length,
 )
 
 function sessionFor(id: string) {
