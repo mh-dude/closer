@@ -472,8 +472,8 @@ watch(
   border-radius: 999px;
   background: var(--line);
   box-shadow:
-    inset 0 1px 3px color-mix(in srgb, var(--ink) 16%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, #fff 55%, transparent);
+    inset 0 1px 3px color-mix(in srgb, var(--shade) 55%, transparent),
+    inset 0 -1px 0 var(--sheen);
   transition: background 0.15s ease;
 }
 .scale__track--armed .rail {
@@ -573,7 +573,7 @@ watch(
   background: var(--answer);
   box-shadow:
     0 0 0 2.5px var(--paper-raised),
-    0 1px 3px color-mix(in srgb, var(--ink) 25%, transparent);
+    0 1px 3px color-mix(in srgb, var(--shade) 55%, transparent);
   opacity: 0;
   transition: opacity 0.35s ease;
   z-index: 4;
@@ -658,7 +658,7 @@ watch(
 .drophint--live .drophint__label {
   border-style: solid;
   background: var(--guess);
-  color: #fff;
+  color: var(--guess-fg);
 }
 
 .legend {

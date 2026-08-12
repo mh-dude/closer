@@ -151,7 +151,7 @@ function onPointerdown(event: PointerEvent) {
   /* Surface ring, so a guess stays legible where it overlaps an answer. */
   box-shadow:
     0 0 0 2.5px var(--paper-raised),
-    0 1px 3px color-mix(in srgb, var(--ink) 25%, transparent);
+    0 1px 3px color-mix(in srgb, var(--shade) 55%, transparent);
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 .marker--selected .marker__dot {

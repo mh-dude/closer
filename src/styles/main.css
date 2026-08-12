@@ -1,35 +1,48 @@
 :root {
-  /* Paper / editorial palette */
-  --paper: #f7f4ee;
-  --paper-raised: #fffdf9;
-  --ink: #23201b;
-  --ink-soft: #55504733;
-  --ink-muted: #6f685c;
-  --line: #ded7ca;
-  --line-strong: #c8c0af;
+  /* Almanac — midnight star chart, gold engraving */
+  color-scheme: dark;
+
+  --paper: #0f1730;
+  --paper-raised: #17203f;
+  --ink: #f0ead9;
+  --ink-soft: #f0ead933;
+  --ink-muted: #a2abc4;
+  --line: #2b3859;
+  --line-strong: #46578a;
 
   /* Restrained accents */
-  --accent: #b4551f; /* warm terracotta */
-  --accent-ink: #8f4318;
+  --accent: #e3b23c; /* engraved gold */
+  --accent-ink: #f0c65c; /* links, and the hover state — lighter, not darker */
+  /* Anything filled with accent or guess is a light swatch here, so its label
+     has to be the ground, not white. */
+  --accent-fg: #14182c;
+  --guess-fg: #0d1226;
   /*
    * Guess vs. answer are a two-slot categorical pair and must stay tellable
-   * apart. The earlier slate/sage pairing measured ΔE 10.7 for normal vision —
-   * below the 15 floor — so the reveal was genuinely ambiguous. These are
-   * validated against the paper surface alongside the accent; re-run
-   * scripts/validate_palette.js before changing either.
+   * apart. An earlier slate/sage pairing measured ΔE 10.7 for normal vision —
+   * below the 15 floor — so the reveal was genuinely ambiguous. This pair sits
+   * at ΔE 43.6, and holds at 50.0 / 55.5 under simulated protanopia and
+   * deuteranopia. Re-measure against all three before changing either.
    */
-  --guess: #2f6db0; /* the player's guess */
-  --answer: #2e8b57; /* the true answer */
+  --guess: #7fb2f0; /* the player's guess */
+  --answer: #f0a35e; /* the true answer */
 
   /* Score bands (paired with text labels — never color alone) */
-  --band-exact: #2f7d5b;
-  --band-very-close: #4f9e6a;
-  --band-close: #b78b1e;
-  --band-off: #c0762a;
-  --band-far: #b4432b;
+  --band-exact: #6fd3a0;
+  --band-very-close: #a8dc8a;
+  --band-close: #e9cc63;
+  --band-off: #eda059;
+  --band-far: #ef7b74;
 
-  --shadow-sm: 0 1px 2px rgba(35, 32, 27, 0.06);
-  --shadow-md: 0 6px 24px rgba(35, 32, 27, 0.1);
+  /*
+   * Shadows are cast in the ground, not in ink. On a midnight paper an
+   * ink-tinted shadow is a pale haze sitting on top of the card, so depth
+   * comes from a near-black shade plus a hairline of sheen along lit edges.
+   */
+  --shade: #04070f;
+  --sheen: #ffffff2b;
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--shade) 45%, transparent);
+  --shadow-md: 0 10px 28px color-mix(in srgb, var(--shade) 60%, transparent);
 
   --radius: 10px;
   --radius-sm: 7px;
@@ -160,7 +173,7 @@ button {
 .btn--primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
 }
 .btn--block {
   width: 100%;

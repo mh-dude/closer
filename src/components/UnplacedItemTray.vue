@@ -137,7 +137,7 @@ function onPointerdown(item: PuzzleItem, event: PointerEvent) {
 .tray__chip--armed:active {
   background: var(--guess);
   border-color: var(--guess);
-  color: #fff;
+  color: var(--guess-fg);
   transform: translateY(-4px) scale(1.06);
   box-shadow:
     0 0 0 4px color-mix(in srgb, var(--guess) 22%, transparent),
@@ -145,7 +145,7 @@ function onPointerdown(item: PuzzleItem, event: PointerEvent) {
 }
 @media (hover: hover) {
   .tray__chip--armed:hover {
-    color: #fff;
+    color: var(--guess-fg);
   }
 }
 </style>
