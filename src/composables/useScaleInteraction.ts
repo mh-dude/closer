@@ -12,13 +12,22 @@ const clamp01 = (n: number): number => Math.min(1, Math.max(0, n))
  * pointers as the finger leaves the element, so without capture a drag dies as
  * soon as it strays off the marker.
  */
+/** Travel that separates a tap from a drag, matching the tray's threshold. */
+const DRAG_THRESHOLD = 6
+
 export function useScaleInteraction(
   getTrackRect: () => DOMRect | null,
   setPosition: (itemId: string, position: number) => void,
+  /** The press ended without travelling: a tap, not a drag. */
+  onTap?: (itemId: string) => void,
 ) {
   const draggingId = ref<string | null>(null)
+  /** False until the pointer has travelled far enough to count as a drag. */
+  const moving = ref(false)
   let captureEl: HTMLElement | null = null
   let capturedPointerId = -1
+  let startX = 0
+  let startY = 0
 
   function positionFromClientX(clientX: number): number {
     const rect = getTrackRect()
@@ -28,13 +37,22 @@ export function useScaleInteraction(
 
   function onPointerMove(event: PointerEvent) {
     if (draggingId.value == null || event.pointerId !== capturedPointerId) return
+    if (!moving.value) {
+      if (Math.hypot(event.clientX - startX, event.clientY - startY) < DRAG_THRESHOLD) return
+      moving.value = true
+    }
     event.preventDefault()
     setPosition(draggingId.value, positionFromClientX(event.clientX))
   }
 
   function onPointerEnd(event: PointerEvent) {
     if (event.pointerId !== capturedPointerId) return
+    const itemId = draggingId.value
+    const wasDrag = moving.value
     endDrag()
+    // A press that never travelled is a tap, and the caller decides what that
+    // means — here, lifting the marker into the player's hand.
+    if (!wasDrag && itemId != null && event.type !== 'pointercancel') onTap?.(itemId)
   }
 
   function endDrag() {
@@ -48,6 +66,7 @@ export function useScaleInteraction(
     captureEl = null
     capturedPointerId = -1
     draggingId.value = null
+    moving.value = false
   }
 
   function startDrag(itemId: string, event: PointerEvent, element: HTMLElement) {
@@ -55,12 +74,15 @@ export function useScaleInteraction(
     captureEl = element
     capturedPointerId = event.pointerId
     draggingId.value = itemId
+    startX = event.clientX
+    startY = event.clientY
     element.setPointerCapture(event.pointerId)
     element.addEventListener('pointermove', onPointerMove, { passive: false })
     element.addEventListener('pointerup', onPointerEnd)
     element.addEventListener('pointercancel', onPointerEnd)
-    setPosition(itemId, positionFromClientX(event.clientX))
+    // Deliberately no move yet: until the pointer travels, this might be a tap,
+    // and a tap must leave the marker exactly where the player found it.
   }
 
-  return { draggingId, startDrag, positionFromClientX }
+  return { draggingId, moving, startDrag, positionFromClientX }
 }

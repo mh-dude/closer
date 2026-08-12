@@ -2,8 +2,8 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { Puzzle } from '@/types/puzzle'
 import type { Placements, PuzzleResult } from '@/types/session'
-import { scaleTicks } from '@/services/scale'
-import { formatTick } from '@/services/format'
+import { scaleTicks, positionToValue } from '@/services/scale'
+import { formatTick, formatValue } from '@/services/format'
 import { useScaleInteraction } from '@/composables/useScaleInteraction'
 import ScaleMarker from './ScaleMarker.vue'
 
@@ -21,6 +21,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'place', itemId: string, position: number): void
+  (e: 'pickup', itemId: string): void
   (e: 'select', itemId: string | null): void
   (e: 'nudge', itemId: string, steps: number): void
   (e: 'unplace', itemId: string): void
@@ -32,8 +33,12 @@ function getTrackRect(): DOMRect | null {
   return trackRef.value?.getBoundingClientRect() ?? null
 }
 
-const { startDrag } = useScaleInteraction(getTrackRect, (itemId, position) =>
-  emit('place', itemId, position),
+const { startDrag, draggingId, moving } = useScaleInteraction(
+  getTrackRect,
+  (itemId, position) => emit('place', itemId, position),
+  // Tapped, not dragged: lift the marker into the player's hand, the same way
+  // tapping a tray chip does. The next tap on the rail sets it down.
+  (itemId) => emit('pickup', itemId),
 )
 
 // The tray needs the track geometry to turn a drop point into a position.
@@ -156,43 +161,69 @@ function positionAt(clientX: number): number | null {
 
 function onMarkerPointerdown(itemId: string, event: PointerEvent) {
   if (props.submitted) return
-  // A held item lands wherever you press, even on top of an existing marker.
-  if (props.armedItemId) {
-    beginArmedPlacement(event)
-    return
-  }
   const el = (event.target as HTMLElement).closest('.marker__handle') as HTMLElement | null
+  // Anywhere but the handle is track, and the track will place the held item.
   if (!el) return
+  /*
+   * Grabbing the marker wins over dropping the held item on top of it. Placing
+   * one item hands over the next, so something is in hand for the whole run —
+   * and reaching back to adjust what you just placed has to keep working.
+   */
   emit('select', itemId)
+  armedPreview.value = null
   startDrag(itemId, event, el)
 }
 
 function onTrackPointerdown(event: PointerEvent) {
   if (props.submitted) return
 
+  /*
+   * Taps that land on a marker belong to the marker, held item or not. Since
+   * placing one item hands over the next, something is in hand for the whole
+   * run — and without this, reaching back to nudge a marker you just placed
+   * would drop the next item on top of it instead.
+   */
+  if ((event.target as HTMLElement).closest('.marker__handle')) return
+
   if (props.armedItemId) {
     beginArmedPlacement(event)
     return
   }
 
-  // Ignore taps that land on a marker; the marker handles those itself.
-  if ((event.target as HTMLElement).closest('.marker__handle')) return
+  /*
+   * Nothing in hand, so the rail has nothing to receive. Moving a placed marker
+   * now goes through picking it up first — pressing bare track used to teleport
+   * whichever marker happened to be selected, which is a different rule from
+   * the one the rest of the board follows.
+   */
+  emit('select', null)
+  beginProbe(event)
+}
 
-  const selected = props.selectedItemId
-  if (!selected || !(selected in props.placements)) {
-    emit('select', null)
-    return
-  }
+/*
+ * Reading the rail with nothing in hand: press anywhere on it and the value
+ * under the finger appears, following it until you lift. Nothing is placed and
+ * nothing is selected — it's the scale answering "what is here?", which on a
+ * touch screen is the only way to ask, there being no pointer to hover with.
+ */
+const probePosition = ref<number | null>(null)
+const probePointerId = ref(-1)
 
-  emit('select', selected)
-  if (event.pointerType === 'touch') {
-    // The track stays vertically scrollable on touch, so a tap places the
-    // selected marker outright — a follow-on drag here would fight the scroll.
-    const position = positionAt(event.clientX)
-    if (position !== null) emit('place', selected, position)
-  } else if (trackRef.value) {
-    startDrag(selected, event, trackRef.value)
+function beginProbe(event: PointerEvent) {
+  const track = trackRef.value
+  if (!track || probePointerId.value !== -1) return
+  probePointerId.value = event.pointerId
+  track.setPointerCapture(event.pointerId)
+  probePosition.value = positionAt(event.clientX)
+}
+
+function endProbe() {
+  const track = trackRef.value
+  if (track?.hasPointerCapture(probePointerId.value)) {
+    track.releasePointerCapture(probePointerId.value)
   }
+  probePointerId.value = -1
+  probePosition.value = null
 }
 
 /**
@@ -228,7 +259,20 @@ function endArmedPlacement() {
 }
 
 function onTrackPointermove(event: PointerEvent) {
-  if (props.submitted || !props.armedItemId) return
+  if (props.submitted) return
+
+  if (probePointerId.value !== -1) {
+    if (event.pointerId !== probePointerId.value) return
+    // Deliberately not preventDefault: a probe must never cost the player the
+    // ability to scroll the page off a gesture that started on the rail.
+    probePosition.value = positionAt(event.clientX)
+    return
+  }
+
+  if (!props.armedItemId) return
+  // Repositioning a marker: that's the thing following the pointer, so the
+  // held item's preview stands still rather than chasing it too.
+  if (draggingId.value) return
   if (placingPointerId.value !== -1) {
     if (event.pointerId !== placingPointerId.value) return
     if (event.cancelable) event.preventDefault()
@@ -240,6 +284,10 @@ function onTrackPointermove(event: PointerEvent) {
 }
 
 function onTrackPointerup(event: PointerEvent) {
+  if (event.pointerId === probePointerId.value) {
+    endProbe()
+    return
+  }
   if (event.pointerId !== placingPointerId.value) return
   const itemId = props.armedItemId
   const position = positionAt(event.clientX)
@@ -249,6 +297,10 @@ function onTrackPointerup(event: PointerEvent) {
 
 /** The gesture became a scroll: drop the preview, keep holding the item. */
 function onTrackPointercancel(event: PointerEvent) {
+  if (event.pointerId === probePointerId.value) {
+    endProbe()
+    return
+  }
   if (event.pointerId !== placingPointerId.value) return
   endArmedPlacement()
   armedPreview.value = null
@@ -271,15 +323,28 @@ const itemById = computed(() =>
   Object.fromEntries(props.puzzle.items.map((i) => [i.id, i])),
 )
 
+/**
+ * What the guess would read as if it landed here — the same value the results
+ * will quote back, so the estimate is made against the number rather than
+ * against the gap between two gridlines.
+ */
+function readingAt(position: number) {
+  const { minValue, maxValue, scaleType, unit } = props.puzzle
+  return formatValue(positionToValue(position, minValue, maxValue, scaleType), unit)
+}
+
 /** The drag preview wins; otherwise show where a held item would land. */
 const activeHint = computed(() => {
-  if (props.dropHint) return { ...props.dropHint, live: false }
-  if (props.armedItemId && armedPreview.value !== null) {
+  if (props.dropHint) {
+    return { ...props.dropHint, reading: readingAt(props.dropHint.position), live: false }
+  }
+  if (props.armedItemId && armedPreview.value !== null && !draggingId.value) {
     const item = itemById.value[props.armedItemId]
     if (item) {
       return {
         label: item.shortLabel || item.label,
         position: armedPreview.value,
+        reading: readingAt(armedPreview.value),
         // A finger is on the track choosing the spot, so commit to showing it.
         live: placingPointerId.value !== -1,
       }
@@ -301,6 +366,16 @@ watch(
 
 <template>
   <figure class="scale">
+    <!--
+      Only on log scales: it's the one case where reading the rail the obvious
+      way gives the wrong answer, and a "linear scale" note on the other puzzles
+      would be noise on a board that already reads correctly.
+    -->
+    <figcaption v-if="puzzle.scaleType === 'logarithmic'" class="scale__note">
+      <span class="scale__note-lead">Logarithmic scale</span>
+      <span class="scale__note-body">equal steps multiply rather than add</span>
+    </figcaption>
+
     <div
       ref="trackRef"
       class="scale__track"
@@ -353,6 +428,18 @@ watch(
         ></div>
       </template>
 
+      <!-- Reading the rail with an empty hand: value only, no commitment. -->
+      <div
+        v-if="probePosition !== null"
+        class="probe"
+        :class="`probe--edge-${edgeFor(probePosition)}`"
+        :style="{ left: `${probePosition * 100}%` }"
+        aria-hidden="true"
+      >
+        <span class="probe__guide"></span>
+        <span class="probe__value">{{ readingAt(probePosition) }}</span>
+      </div>
+
       <!-- Where the item being dragged or carried would land -->
       <div
         v-if="activeHint"
@@ -366,7 +453,10 @@ watch(
       >
         <span class="drophint__guide"></span>
         <span class="drophint__dot"></span>
-        <span class="drophint__label">{{ activeHint.label }}</span>
+        <span class="drophint__label">
+          <span class="drophint__name">{{ activeHint.label }}</span>
+          <span class="drophint__reading">{{ activeHint.reading }}</span>
+        </span>
       </div>
 
       <ScaleMarker
@@ -377,6 +467,9 @@ watch(
         :selected="selectedItemId === item.id"
         :row="rowByItemId[item.id]"
         :disabled="submitted"
+        :reading="readingAt(placements[item.id])"
+        :dragging="draggingId === item.id && moving"
+        :lifted="armedItemId === item.id"
         @pointerdown="onMarkerPointerdown(item.id, $event)"
         @select="emit('select', item.id)"
         @nudge="emit('nudge', item.id, $event)"
@@ -439,6 +532,58 @@ watch(
   --label-h: 22px;
   width: 100%;
   margin: 0;
+}
+
+/*
+ * Sits above the track rather than inside its empty top band: that band is the
+ * third row of marker labels, so anything parked there collides as soon as
+ * three markers land near each other.
+ */
+.scale__note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px 7px;
+  margin-bottom: 14px;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--ink-muted);
+}
+.scale__note-lead {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* An em dash the copy doesn't have to carry, and that disappears when the two
+   halves wrap onto separate lines. */
+.scale__note-body::before {
+  content: '— ';
+}
+@media (max-width: 420px) {
+  .scale__note-body::before {
+    content: none;
+  }
+  .scale__note {
+    gap: 1px 7px;
+    margin-bottom: 10px;
+  }
+}
+/*
+ * Landscape phone: the board and the tray are already fighting for the same
+ * few hundred pixels, so the caption keeps the warning and drops the
+ * explanation rather than taking another line off the board.
+ */
+@media (max-height: 560px) {
+  .scale__note {
+    margin-bottom: 8px;
+    font-size: 0.68rem;
+  }
+  .scale__note-body {
+    display: none;
+  }
 }
 
 .scale__track {
@@ -582,6 +727,55 @@ watch(
   opacity: 1;
 }
 
+/*
+ * Probe: the value under a finger that is only reading, not placing. Ink
+ * rather than guess-blue, because nothing here is anybody's guess yet, and it
+ * rides above the rail so a thumb resting on the track can't cover it.
+ */
+.probe {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+.probe__guide {
+  position: absolute;
+  bottom: var(--rail-top);
+  left: 0;
+  width: 1px;
+  height: var(--axis-band);
+  transform: translateX(-50%);
+  background: var(--ink-muted);
+  opacity: 0.55;
+}
+.probe__value {
+  position: absolute;
+  bottom: calc(var(--label-base) + var(--row-1));
+  left: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.74rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  background: var(--paper-raised);
+  border: 1px solid var(--line-strong);
+  padding: 2px 9px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+/* Anchored inward at the ends so the bubble can't hang off the board. */
+.probe--edge-start .probe__value {
+  left: -6px;
+  transform: none;
+}
+.probe--edge-end .probe__value {
+  left: auto;
+  right: -6px;
+  transform: none;
+}
+
 /* Drop preview */
 .drophint {
   position: absolute;
@@ -622,10 +816,11 @@ watch(
   bottom: calc(var(--label-base) + var(--row-1));
   left: 0;
   transform: translateX(-50%);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
   white-space: nowrap;
   max-width: 40vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: 0.74rem;
   font-weight: 600;
   color: var(--guess);
@@ -633,6 +828,23 @@ watch(
   border: 1px dashed var(--guess);
   padding: 2px 8px;
   border-radius: 999px;
+}
+.drophint__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+/*
+ * The live value. Tabular figures so the digits don't shuffle the pill left and
+ * right as it tracks the pointer — the pill is centred on the position, so any
+ * width change moves both its edges.
+ */
+.drophint__reading {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  padding-left: 7px;
+  border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
 }
 .drophint--edge-start .drophint__label {
   left: -6px;

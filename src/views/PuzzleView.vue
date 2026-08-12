@@ -25,6 +25,11 @@ function setupPuzzle(slug: string) {
   puzzle.value = found
   notFound.value = !found
   session.value = found ? usePuzzleSession(found) : null
+  // Open with the first item already in hand. The board is useless until
+  // something is picked up, so starting empty-handed is a step that only ever
+  // has one right answer. Nothing is placed yet — it's held, and putting it
+  // back is the same click it always was.
+  armedItemId.value = session.value?.unplacedItems.value[0]?.id ?? null
 }
 
 onMounted(async () => {
@@ -35,9 +40,11 @@ onMounted(async () => {
 watch(
   () => route.params.puzzleSlug,
   (slug) => {
-    if (puzzles.value.length) setupPuzzle(slug as string)
+    // Clear before setting up, not after: setupPuzzle arms the next puzzle's
+    // first item, and clearing afterwards would immediately drop it.
     endTrayDrag()
     armedItemId.value = null
+    if (puzzles.value.length) setupPuzzle(slug as string)
   },
 )
 
@@ -176,9 +183,30 @@ onBeforeUnmount(() => {
 })
 
 function place(itemId: string, position: number) {
+  /*
+   * Landing an item hands over the next one, so the tray empties in a single
+   * run of clicks. Gated on the item having come from the tray: this same
+   * function also fires when an already-placed marker is dragged to a new spot,
+   * and pushing a fresh item into someone's hand mid-adjustment would be a
+   * surprise.
+   */
+  const fromTray = !!s.value && !(itemId in s.value.placements.value)
+
   s.value?.place(itemId, position)
   s.value?.select(itemId)
   if (armedItemId.value === itemId) armedItemId.value = null
+
+  if (fromTray) armedItemId.value = s.value?.unplacedItems.value[0]?.id ?? null
+}
+
+/**
+ * A placed marker was tapped: lift it back into the player's hand, so moving it
+ * is the same two clicks as placing it was. Tapping it again sets it back down
+ * where it already is, matching how a held tray chip goes back.
+ */
+function onPickup(itemId: string) {
+  armedItemId.value = armedItemId.value === itemId ? null : itemId
+  s.value?.select(itemId)
 }
 
 /** Keyboard activation drops the item mid-scale, where arrow keys take over —
@@ -239,6 +267,7 @@ function nextPuzzle() {
           :drop-hint="dropHint"
           :armed-item-id="armedItemId"
           @place="place"
+          @pickup="onPickup"
           @select="s.select"
           @nudge="s.nudge"
           @unplace="s.unplace"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { PuzzleItem } from '@/types/puzzle'
 
 const props = defineProps<{
@@ -9,6 +9,12 @@ const props = defineProps<{
   /** Which of the label rows above the rail this marker uses. */
   row: 'near' | 'mid' | 'far'
   disabled: boolean
+  /** What this marker currently reads, in the puzzle's own units. */
+  reading: string
+  /** True while a pointer is moving this marker. */
+  dragging: boolean
+  /** Picked up and waiting to be set down; this is where it was. */
+  lifted: boolean
 }>()
 
 const emit = defineEmits<{
@@ -19,6 +25,18 @@ const emit = defineEmits<{
 }>()
 
 const label = computed(() => props.item.shortLabel || props.item.label)
+
+/*
+ * The value rides along only while this marker is actually being adjusted —
+ * dragged, or held by the keyboard. Showing it on every marker at rest would
+ * put six numbers on the board and answer the question for the player.
+ */
+const focused = ref(false)
+const showReading = computed(
+  // Not while lifted: the drop preview is carrying the live value then, and two
+  // pills quoting different numbers for one item is a puzzle of its own.
+  () => !props.disabled && !props.lifted && (props.dragging || focused.value),
+)
 const leftStyle = computed(() => ({ left: `${props.position * 100}%` }))
 const ariaValue = computed(() => Math.round(props.position * 100))
 
@@ -70,11 +88,14 @@ function onPointerdown(event: PointerEvent) {
     :class="[
       `marker--${row}`,
       `marker--edge-${edge}`,
-      { 'marker--selected': selected, 'marker--done': disabled },
+      { 'marker--selected': selected, 'marker--done': disabled, 'marker--lifted': lifted },
     ]"
     :style="leftStyle"
   >
-    <span class="marker__label">{{ label }}</span>
+    <span class="marker__label" :class="{ 'marker__label--reading': showReading }">
+      <span class="marker__name">{{ label }}</span>
+      <span v-if="showReading" class="marker__reading">{{ reading }}</span>
+    </span>
     <span class="marker__stem" aria-hidden="true"></span>
     <!--
       Only the handle takes pointer events. The label column above it spans the
@@ -92,7 +113,8 @@ function onPointerdown(event: PointerEvent) {
       :aria-valuetext="`${ariaValue}% along the scale`"
       @pointerdown="onPointerdown"
       @click="emit('select')"
-      @focus="emit('select')"
+      @focus="focused = true; emit('select')"
+      @blur="focused = false"
       @keydown="onKeydown"
     >
       <span class="marker__dot" aria-hidden="true"></span>
@@ -186,10 +208,11 @@ function onPointerdown(event: PointerEvent) {
   position: absolute;
   left: 0;
   transform: translateX(-50%);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
   white-space: nowrap;
   max-width: 40vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
   font-size: 0.76rem;
   font-weight: 600;
   color: var(--ink);
@@ -198,6 +221,46 @@ function onPointerdown(event: PointerEvent) {
   padding: 2px 8px;
   border-radius: 999px;
   transition: bottom 0.15s ease;
+}
+.marker__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+/* Reads the same as the drop preview's value, so the number means the same
+   thing whether you are placing an item or adjusting one. */
+.marker__reading {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+  padding-left: 7px;
+  border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+}
+/* Lifted above its neighbours while it carries a value, so a wider pill can't
+   be overlapped by the marker next to it. */
+.marker__label--reading {
+  z-index: 1;
+  border-color: var(--guess);
+  color: var(--guess);
+}
+
+/*
+ * Lifted: the marker is in the player's hand, and what's left on the rail is
+ * the socket it came out of. Faded rather than hidden, so the old position
+ * stays readable while a new one is being chosen — and the hollow dot says
+ * "nothing is here right now" without inventing a new colour.
+ */
+.marker--lifted {
+  opacity: 0.4;
+}
+.marker--lifted .marker__dot {
+  background: transparent;
+  box-shadow:
+    0 0 0 2.5px var(--paper-raised),
+    inset 0 0 0 2px var(--guess);
+}
+.marker--lifted .marker__label {
+  border-style: dashed;
 }
 .marker--near .marker__label {
   bottom: calc(var(--label-base) + var(--row-1));
