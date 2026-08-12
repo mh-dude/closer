@@ -30,6 +30,20 @@ const headline = computed(() => {
   return 'A tough one.'
 })
 
+const feedbackUrl = computed(() => {
+  const title = `Feedback: ${props.puzzle.title || props.puzzle.id}`
+  const body = [
+    `**Puzzle:** ${props.puzzle.id}`,
+    `**Score:** ${props.result.total} / 100`,
+    '',
+    '<!-- Tell us what you think, report a bug, or share anything on your mind -->',
+  ].join('\n')
+  return (
+    'https://github.com/mh-dude/closer/issues/new' +
+    `?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`
+  )
+})
+
 const animatedTotal = ref(0)
 
 function prefersReducedMotion() {
@@ -94,6 +108,10 @@ onMounted(() => {
         :result="r"
       />
     </ul>
+
+    <p class="result__feedback">
+      <a :href="feedbackUrl" target="_blank" rel="noopener noreferrer">Send feedback</a>
+    </p>
   </section>
 </template>
 
@@ -149,5 +167,20 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.result__feedback {
+  margin: 0;
+  text-align: center;
+  font-size: 0.82rem;
+}
+.result__feedback a {
+  color: var(--ink-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (hover: hover) {
+  .result__feedback a:hover {
+    color: var(--ink);
+  }
 }
 </style>
